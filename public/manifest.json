@@ -1,0 +1,27 @@
+{
+  "name": "ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону",
+  "short_name": "ШарикиРостов.рф",
+  "description": "Воздушные шары в Ростове-на-Дону! Качественные шары по доступным ценам.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ec4899",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "lang": "ru",
+  "dir": "ltr"
+} 

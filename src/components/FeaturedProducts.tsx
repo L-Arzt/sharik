@@ -1,0 +1,202 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { Star, Heart, Eye } from 'lucide-react';
+
+const products = [
+  {
+    id: 1,
+    name: 'Букет "Розовая мечта"',
+    description: 'Элегантная композиция из розовых и белых шаров',
+    price: 2500,
+    oldPrice: 3000,
+    rating: 4.8,
+    reviews: 127,
+    image: '/balloon-1.jpg',
+    category: 'Свадьба',
+    inStock: true,
+    sku: 'BAL-001'
+  },
+  {
+    id: 2,
+    name: 'Набор "День рождения"',
+    description: 'Яркие разноцветные шары для детского праздника',
+    price: 1800,
+    oldPrice: 2200,
+    rating: 4.9,
+    reviews: 89,
+    image: '/balloon-2.jpg',
+    category: 'День рождения',
+    inStock: true,
+    sku: 'BAL-002'
+  },
+  {
+    id: 3,
+    name: 'Композиция "Корпоратив"',
+    description: 'Профессиональные шары для бизнес-мероприятий',
+    price: 3200,
+    oldPrice: 3800,
+    rating: 4.7,
+    reviews: 56,
+    image: '/balloon-3.jpg',
+    category: 'Корпоратив',
+    inStock: true,
+    sku: 'BAL-003'
+  },
+  {
+    id: 4,
+    name: 'Букет "Премиум"',
+    description: 'Эксклюзивная композиция с золотыми элементами',
+    price: 4500,
+    oldPrice: 5200,
+    rating: 5.0,
+    reviews: 34,
+    image: '/balloon-4.jpg',
+    category: 'Премиум',
+    inStock: true,
+    sku: 'BAL-004'
+  }
+];
+
+const FeaturedProducts = () => {
+  return (
+    <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-primary-50 to-secondary-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-12 md:mb-16"
+        >
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+            Популярные товары
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+            Наши самые востребованные композиции из воздушных шаров
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
+          {products.map((product, index) => (
+            <motion.article
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -8 }}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300"
+              itemScope
+              itemType="https://schema.org/Product"
+            >
+              {/* Product Image */}
+              <div className="relative h-48 sm:h-56 lg:h-64 bg-gradient-to-br from-primary-100 to-secondary-100 overflow-hidden">
+                                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-24 h-32 sm:w-28 sm:h-36 lg:w-32 lg:h-40 bg-gradient-to-b from-primary-400 to-secondary-600 rounded-full opacity-80" />
+                  </div>
+                <div className="absolute top-4 right-4">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:bg-primary-50"
+                  >
+                    <Heart className="w-5 h-5 text-gray-600 hover:text-primary-600 transition-colors" />
+                  </motion.button>
+                </div>
+                <div className="absolute top-4 left-4">
+                  <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                    -{Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
+                  </span>
+                </div>
+              </div>
+
+              {/* Product Info */}
+              <div className="p-4 sm:p-6">
+                <meta itemProp="sku" content={product.sku} />
+                <meta itemProp="category" content={product.category} />
+                
+                <h3 
+                  className="text-lg sm:text-xl font-bold text-gray-800 mb-2 group-hover:text-primary-600 transition-colors duration-300"
+                  itemProp="name"
+                >
+                  {product.name}
+                </h3>
+                
+                <p 
+                  className="text-gray-600 mb-4 text-sm leading-relaxed"
+                  itemProp="description"
+                >
+                  {product.description}
+                </p>
+
+                {/* Rating */}
+                <div className="flex items-center mb-4">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${
+                          i < Math.floor(product.rating)
+                            ? 'text-yellow-400 fill-current'
+                            : 'text-gray-300'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="ml-2 text-sm text-gray-600">
+                    {product.rating} ({product.reviews})
+                  </span>
+                </div>
+
+                {/* Price */}
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <span 
+                      className="text-2xl font-bold text-gray-800"
+                      itemProp="offers"
+                      itemScope
+                      itemType="https://schema.org/Offer"
+                    >
+                      <meta itemProp="priceCurrency" content="RUB" />
+                      <meta itemProp="price" content={product.price.toString()} />
+                      <meta itemProp="availability" content={product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"} />
+                      {product.price.toLocaleString()} ₽
+                    </span>
+                    <span className="text-gray-400 line-through ml-2">
+                      {product.oldPrice.toLocaleString()} ₽
+                    </span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex-1 bg-gradient-to-r from-primary-500 to-secondary-600 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                  >
+                    Заказать
+                  </motion.button>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-12 h-12 border-2 border-secondary-500 text-secondary-600 rounded-lg flex items-center justify-center hover:bg-secondary-50 transition-all duration-300 hover:scale-105"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </motion.button>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+
+      </div>
+    </section>
+  );
+};
+
+export default FeaturedProducts; 
