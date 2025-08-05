@@ -17,7 +17,7 @@ const testimonials = [
     id: 2,
     name: 'Михаил Соколов',
     role: 'Организатор мероприятий',
-    content: 'Работаю с этой компанией уже 2 года. Всегда качественные шары, креативные идеи и профессиональный подход. Рекомендую всем!',
+    content: 'Работаю с этой компанией продолжительное время. Всегда качественные шары, креативные идеи и профессиональный подход. Рекомендую всем!',
     rating: 5,
     date: '2024-07-10',
     image: '/testimonial-2.jpg'
@@ -25,7 +25,7 @@ const testimonials = [
   {
     id: 3,
     name: 'Елена Козлова',
-    role: 'Мама',
+    role: 'Мама именинника',
     content: 'Заказала шары для дня рождения дочки. Ребенок был в полном восторге! Яркие цвета, красивые композиции. Обязательно закажу еще.',
     rating: 5,
     date: '2024-07-08',
@@ -101,7 +101,7 @@ const Testimonials = () => {
                 className="text-gray-700 mb-6 text-lg leading-relaxed"
                 itemProp="reviewBody"
               >
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </blockquote>
 
               {/* Author */}
@@ -135,11 +135,11 @@ const Testimonials = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"
         >
           <div className="text-center">
-            <div className="text-4xl font-bold text-purple-600 mb-2">1000+</div>
+            <div className="text-4xl font-bold text-purple-600 mb-2">400+</div>
             <div className="text-gray-600">Довольных клиентов</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-pink-600 mb-2">5000+</div>
+            <div className="text-4xl font-bold text-pink-600 mb-2">550+</div>
             <div className="text-gray-600">Заказов выполнено</div>
           </div>
           <div className="text-center">
@@ -156,4 +156,4 @@ const Testimonials = () => {
   );
 };
 
-export default Testimonials; 
+export default Testimonials;

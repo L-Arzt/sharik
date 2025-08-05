@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Gift, Users, Calendar, Star, Sparkles } from 'lucide-react';
+import { Heart, Gift, Users, Calendar, Star, Sparkles, Baby } from 'lucide-react';
 
 const categories = [
   {
@@ -51,9 +51,9 @@ const categories = [
   },
   {
     id: 6,
-    name: 'Премиум',
+    name: 'Гендер-пати',
     description: 'Эксклюзивные дизайнерские решения',
-    icon: Star,
+    icon: Baby,
     color: 'from-indigo-400 to-purple-500',
     bgColor: 'bg-indigo-50',
     count: '20+ вариантов'
@@ -62,7 +62,7 @@ const categories = [
 
 const Categories = () => {
   return (
-    <section className="py-16 md:py-20 lg:py-24 bg-white">
+    <section id="main-section" className="py-16 md:py-20 lg:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -118,13 +118,14 @@ const Categories = () => {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <motion.button
+          <motion.a
+            href="https://t.me/cloudless_sky"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-shadow"
+            className="inline-flex bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-shadow"
           >
             Смотреть все категории
-          </motion.button>
+          </motion.a>
         </motion.div>
       </div>
     </section>

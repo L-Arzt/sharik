@@ -2,57 +2,57 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Star, Heart, Eye } from 'lucide-react';
+import { Star, Heart, Eye, ChevronDown } from 'lucide-react';
 
 const products = [
   {
     id: 1,
-    name: 'Букет "Розовая мечта"',
-    description: 'Элегантная композиция из розовых и белых шаров',
-    price: 2500,
-    oldPrice: 3000,
+    name: 'Набор "Гендер-пати"',
+    description: 'Элегантная композиция из розовых или голубых шаров в коробке',
+    price: 5000,
+    oldPrice: 6000,
     rating: 4.8,
-    reviews: 127,
-    image: '/balloon-1.jpg',
-    category: 'Свадьба',
+    reviews: 21,
+    image: '/images/pic1.jpg',
+    category: 'Гендер-пати',
     inStock: true,
     sku: 'BAL-001'
   },
   {
     id: 2,
     name: 'Набор "День рождения"',
-    description: 'Яркие разноцветные шары для детского праздника',
-    price: 1800,
-    oldPrice: 2200,
-    rating: 4.9,
-    reviews: 89,
-    image: '/balloon-2.jpg',
+    description: 'Яркие разноцветные шары для любого праздника',
+    price: 9500,
+    oldPrice: 11000,
+    rating: 5,
+    reviews: 58,
+    image: '/images/pic2.jpg',
     category: 'День рождения',
     inStock: true,
     sku: 'BAL-002'
   },
   {
     id: 3,
-    name: 'Композиция "Корпоратив"',
-    description: 'Профессиональные шары для бизнес-мероприятий',
-    price: 3200,
-    oldPrice: 3800,
+    name: 'Набор "Детский"',
+    description: 'Шары для детского праздника с любимыми персонажами',
+    price: 6200,
+    oldPrice: 8000,
     rating: 4.7,
     reviews: 56,
-    image: '/balloon-3.jpg',
+    image: '/images/pic3.jpg',
     category: 'Корпоратив',
     inStock: true,
     sku: 'BAL-003'
   },
   {
     id: 4,
-    name: 'Букет "Премиум"',
-    description: 'Эксклюзивная композиция с золотыми элементами',
-    price: 4500,
-    oldPrice: 5200,
+    name: 'Набор "Свадьба"',
+    description: 'Эксклюзивная композиция с новой фамилией молодожёнов',
+    price: 4900,
+    oldPrice: 6500,
     rating: 5.0,
     reviews: 34,
-    image: '/balloon-4.jpg',
+    image: '/images/pic4.jpg',
     category: 'Премиум',
     inStock: true,
     sku: 'BAL-004'
@@ -62,7 +62,7 @@ const products = [
 const FeaturedProducts = () => {
   return (
     <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-primary-50 to-secondary-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-8xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,18 +93,13 @@ const FeaturedProducts = () => {
             >
               {/* Product Image */}
               <div className="relative h-48 sm:h-56 lg:h-64 bg-gradient-to-br from-primary-100 to-secondary-100 overflow-hidden">
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-24 h-32 sm:w-28 sm:h-36 lg:w-32 lg:h-40 bg-gradient-to-b from-primary-400 to-secondary-600 rounded-full opacity-80" />
-                  </div>
-                <div className="absolute top-4 right-4">
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:bg-primary-50"
-                  >
-                    <Heart className="w-5 h-5 text-gray-600 hover:text-primary-600 transition-colors" />
-                  </motion.button>
-                </div>
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                />
                 <div className="absolute top-4 left-4">
                   <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
                     -{Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
@@ -151,7 +146,7 @@ const FeaturedProducts = () => {
                 </div>
 
                 {/* Price */}
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between">
                   <div>
                     <span 
                       className="text-2xl font-bold text-gray-800"
@@ -169,31 +164,28 @@ const FeaturedProducts = () => {
                     </span>
                   </div>
                 </div>
-
-                {/* Actions */}
-                <div className="flex gap-2">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex-1 bg-gradient-to-r from-primary-500 to-secondary-600 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all duration-300 hover:scale-105"
-                  >
-                    Заказать
-                  </motion.button>
-                  
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-12 h-12 border-2 border-secondary-500 text-secondary-600 rounded-lg flex items-center justify-center hover:bg-secondary-50 transition-all duration-300 hover:scale-105"
-                  >
-                    <Eye className="w-5 h-5" />
-                  </motion.button>
-                </div>
               </div>
             </motion.article>
           ))}
         </div>
 
-
+        {/* Show More Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
+          <motion.a
+            href="https://t.me/cloudless_sky"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-shadow"
+          >
+            Смотреть все товары
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   );

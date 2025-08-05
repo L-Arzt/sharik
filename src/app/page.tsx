@@ -7,12 +7,24 @@ import ContactSection from '@/components/ContactSection';
 import FAQ from '@/components/FAQ';
 
 export const metadata: Metadata = {
-  title: 'ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону',
-  description: 'Воздушные шары в Ростове-на-Дону! Шарики для дня рождения, свадьбы, корпоративов. Качественные шары по доступным ценам. Самовывоз.',
-  keywords: 'воздушные шары ростов, шарики ростов на дону, купить шары ростов, день рождения ростов, свадьба ростов',
+  title: 'ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону | Заказать шары',
+  description: 'Воздушные шары в Ростове-на-Дону! Шарики для дня рождения, свадьбы, корпоративов. Качественные шары по доступным ценам. Доставка по городу от 4000₽. Самовывоз в центре.',
+  keywords: 'воздушные шары ростов, шарики ростов на дону, купить шары ростов, день рождения ростов, свадьба ростов, корпоратив ростов, доставка шаров ростов, заказать шары ростов',
+  authors: [{ name: 'ШарикиРостов.рф' }],
+  creator: 'ШарикиРостов.рф',
+  publisher: 'ШарикиРостов.рф',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://шарикиростов.рф'),
+  alternates: {
+    canonical: 'https://шарикиростов.рф',
+  },
   openGraph: {
-    title: 'ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону',
-    description: 'Воздушные шары в Ростове-на-Дону! Качественные шары по доступным ценам.',
+    title: 'ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону | Заказать шары',
+    description: 'Воздушные шары в Ростове-на-Дону! Качественные шары по доступным ценам. Доставка по городу от 4000₽.',
     type: 'website',
     locale: 'ru_RU',
     url: 'https://шарикиростов.рф',
@@ -22,14 +34,14 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Воздушные шары в Ростове-на-Дону',
+        alt: 'Воздушные шары в Ростове-на-Дону - ШарикиРостов.рф',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону',
-    description: 'Воздушные шары в Ростове-на-Дону!',
+    description: 'Воздушные шары в Ростове-на-Дону! Качественные шары по доступным ценам.',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -43,9 +55,12 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: {
-    canonical: 'https://шарикиростов.рф',
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
   },
+  category: 'shopping',
+  classification: 'Воздушные шары и праздничное оформление',
 };
 
 export default function Home() {

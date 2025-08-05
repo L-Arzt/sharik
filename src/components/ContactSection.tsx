@@ -1,13 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, MessageCircle, InstagramIcon } from 'lucide-react';
 import { useState } from 'react';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
+    phone: '+7 (',
     email: '',
     eventType: '',
     message: ''
@@ -19,25 +19,35 @@ const ContactSection = () => {
   }>({ type: null, message: '' });
 
   const formatPhoneNumber = (value: string) => {
-    // Удаляем все нецифровые символы
-    const numbers = value.replace(/\D/g, '');
+    // Удаляем все нецифровые символы, кроме начального +7
+    const numbers = value.replace(/[^\d+]/g, '');
     
-    // Ограничиваем длину до 11 цифр
-    const limitedNumbers = numbers.slice(0, 10);
+    // Если строка не начинается с +7, возвращаем базовое значение
+    if (!numbers.startsWith('+7')) return '+7 (';
     
-    // Простое форматирование без добавления +7
-    if (limitedNumbers.length === 0) return '';
-    if (limitedNumbers.length <= 3) return `(${limitedNumbers}`;
-    if (limitedNumbers.length <= 6) return `(${limitedNumbers.slice(0, 3)}) ${limitedNumbers.slice(3)}`;
-    if (limitedNumbers.length <= 8) return `(${limitedNumbers.slice(0, 3)}) ${limitedNumbers.slice(3, 6)}-${limitedNumbers.slice(6)}`;
-    return `(${limitedNumbers.slice(0, 3)}) ${limitedNumbers.slice(3, 6)}-${limitedNumbers.slice(6, 8)}-${limitedNumbers.slice(8)}`;
+    // Оставляем только цифры после +7 (максимум 10 цифр)
+    const digits = numbers.slice(2).replace(/\D/g, '').slice(0, 10);
+    
+    // Форматируем введенные цифры
+    let formattedValue = '+7 (';
+    if (digits.length > 0) formattedValue += digits.slice(0, 3);
+    if (digits.length > 3) formattedValue += `) ${digits.slice(3, 6)}`;
+    if (digits.length > 6) formattedValue += `-${digits.slice(6, 8)}`;
+    if (digits.length > 8) formattedValue += `-${digits.slice(8)}`;
+    
+    return formattedValue;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
-    // Специальная обработка для поля телефона
     if (name === 'phone') {
+      // Запрещаем удаление +7 (
+      if (value.length < 4) {
+        setFormData(prev => ({ ...prev, phone: '+7 (' }));
+        return;
+      }
+      
       const formattedValue = formatPhoneNumber(value);
       setFormData(prev => ({
         ...prev,
@@ -52,22 +62,21 @@ const ContactSection = () => {
   };
 
   const validatePhone = (phone: string) => {
-    // Проверяем, что номер содержит 11 цифр
-    const numbers = phone.replace(/\D/g, '');
+    // Проверяем, что номер содержит 10 цифр после +7
+    const numbers = phone.replace(/\D/g, '').slice(1); // Убираем + и оставляем только цифры
     return numbers.length === 10;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-         // Валидация телефона
-     if (!validatePhone(formData.phone)) {
-       setSubmitStatus({ 
-         type: 'error', 
-         message: 'Пожалуйста, введите корректный номер телефона в формате +7 (XXX) XXX-XX-XX' 
-       });
-       return;
-     }
+    if (!validatePhone(formData.phone)) {
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Пожалуйста, введите корректный номер телефона (10 цифр после +7)' 
+      });
+      return;
+    }
 
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: '' });
@@ -78,14 +87,23 @@ const ContactSection = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          phone: formData.phone // Уже содержит +7 в начале
+        }),
       });
 
       const result = await response.json();
 
       if (result.success) {
         setSubmitStatus({ type: 'success', message: result.message });
-        setFormData({ name: '', phone: '', email: '', eventType: '', message: '' });
+        setFormData({ 
+          name: '', 
+          phone: '+7 (', // Сбрасываем к начальному значению
+          email: '', 
+          eventType: '', 
+          message: '' 
+        });
       } else {
         setSubmitStatus({ type: 'error', message: result.message });
       }
@@ -95,8 +113,17 @@ const ContactSection = () => {
       setIsSubmitting(false);
     }
   };
+
+
+  // const scrollToContact = () => {
+  //   const contactSection = document.getElementById('contact-section');
+  //   if (contactSection) {
+  //     contactSection.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // };
+
   return (
-    <section className="py-16 md:py-20 bg-white">
+    <section id="contact-section" className="py-16 md:py-20 bg-gradient-to-br from-blue-50 via-white to-red-50">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -105,11 +132,11 @@ const ContactSection = () => {
           viewport={{ once: true }}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
             Свяжитесь с нами
-          </h2>
+          </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Закажите воздушные шары в Ростове-на-Дону! Доставка по всему городу от 4000₽
+            Закажите воздушные шары в Ростове-на-Дону! Быстрая доставка по всему городу.
           </p>
         </motion.div>
 
@@ -120,11 +147,11 @@ const ContactSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl p-8"
+            className="bg-white rounded-2xl p-8 shadow-xl border border-blue-100"
           >
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
               Оставить заявку
-            </h3>
+            </h2>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
@@ -138,7 +165,7 @@ const ContactSection = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                     placeholder="Ваше имя"
                   />
                 </div>
@@ -153,7 +180,7 @@ const ContactSection = () => {
                      value={formData.phone}
                      onChange={handleInputChange}
                      required
-                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                      placeholder="+7 (999) 123-45-67"
                    />
                    <p className="text-xs text-gray-500 mt-1">
@@ -171,7 +198,7 @@ const ContactSection = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   placeholder="your@email.com"
                 />
               </div>
@@ -184,11 +211,12 @@ const ContactSection = () => {
                   name="eventType"
                   value={formData.eventType}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 >
                   <option value="">Выберите тип мероприятия</option>
                   <option value="День рождения">День рождения</option>
                   <option value="Свадьба">Свадьба</option>
+                  <option value="Гендер-пати">Гендер-пати</option>
                   <option value="Корпоратив">Корпоратив</option>
                   <option value="Праздник">Праздник</option>
                   <option value="Другое">Другое</option>
@@ -204,7 +232,7 @@ const ContactSection = () => {
                   value={formData.message}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
                   placeholder="Опишите ваши пожелания..."
                 />
               </div>
@@ -225,7 +253,7 @@ const ContactSection = () => {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 hover:shadow-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 hover:shadow-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-5 h-5" />
                 {isSubmitting ? 'Отправляем...' : 'Отправить заявку'}
@@ -242,48 +270,47 @@ const ContactSection = () => {
             className="space-y-8"
           >
             <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Контактная информация
-              </h3>
+              </h2>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-pink-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <Phone className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Телефон</h4>
-                    <p className="text-gray-600">+7 (900) 131-23-23</p>
+                    <h3 className="font-semibold text-gray-800 mb-1">Телефон</h3>
+                    <p className="text-gray-600">+7 (995) 135-13-23</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <Mail className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Email</h4>
-                    <p className="text-gray-600">info@шарикиростов.рф</p>
-                    <p className="text-gray-600">support@шарикиростов.рф</p>
+                    <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
+                    <p className="text-gray-600">sharikirostov61@mail.ru</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Адрес</h4>
+                    <h3 className="font-semibold text-gray-800 mb-1">Адрес</h3>
                     <p className="text-gray-600">г. Ростов-на-Дону</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
                     <Clock className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Режим работы</h4>
+                    <h3 className="font-semibold text-gray-800 mb-1">Режим работы</h3>
                     <p className="text-gray-600">Пн-Пт: 9:00 - 20:00</p>
                     <p className="text-gray-600">Сб-Вс: 10:00 - 18:00</p>
                   </div>
@@ -293,28 +320,54 @@ const ContactSection = () => {
 
             {/* Social Links */}
             <div>
-              <h4 className="font-semibold text-gray-800 mb-4">Мы в социальных сетях</h4>
-              <div className="flex gap-4">
+              <h3 className="font-semibold text-gray-800 mb-4">Мы в социальных сетях</h3>
+              <div className="flex flex-wrap gap-3">
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  href="https://t.me/sharikirostov"
+                  href="https://t.me/cloudless_sky"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white hover:shadow-lg transition-shadow"
+                  className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg font-semibold hover:shadow-lg transition-shadow"
                 >
-                  <span className="font-bold">TG</span>
+                  <MessageCircle className="w-5 h-5" />
+                  <span>Telegram</span>
                 </motion.a>
                 
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  href="https://wa.me/79991234567"
+                  href="https://api.whatsapp.com/send?phone=79951352313"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center text-white hover:shadow-lg transition-shadow"
+                  className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 rounded-lg font-semibold hover:shadow-lg transition-shadow"
                 >
                   <span className="font-bold">WA</span>
+                  <span>WhatsApp</span>
+                </motion.a>
+
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href="https://vk.com/cloudlessly_sky"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-3 rounded-lg font-semibold hover:shadow-lg transition-shadow"
+                >
+                  <span className="font-bold">VK</span>
+                  <span>ВКонтакте</span>
+                </motion.a>
+
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href="https://www.instagram.com/cloudlessly_sky?igsh=MTc0aDRld284bTZtcQ=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white px-4 py-3 rounded-lg font-semibold hover:shadow-lg transition-shadow"
+                >
+                  <InstagramIcon className="w-5 h-5" />
+                  <span>Instagram</span>
                 </motion.a>
               </div>
             </div>

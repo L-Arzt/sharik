@@ -1,0 +1,18 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Balloon -->
+  <ellipse cx="16" cy="12" rx="6" ry="8" fill="url(#gradient-balloon)"/>
+  
+  <!-- Balloon string -->
+  <path d="M16 20 L16 28 L14 30 L18 30 L16 28" stroke="#8B5CF6" stroke-width="1" fill="none"/>
+  
+  <!-- Balloon highlight -->
+  <ellipse cx="14" cy="10" rx="1.5" ry="2" fill="rgba(255,255,255,0.4)"/>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="gradient-balloon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EC4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg> 

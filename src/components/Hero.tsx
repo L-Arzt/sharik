@@ -2,9 +2,16 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { ShoppingCart, Star, Truck, Shield } from 'lucide-react';
+import { ShoppingCart, Star, Truck, Shield, MessageCircle, InstagramIcon } from 'lucide-react';
 
 const Hero = () => {
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact-section');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
       {/* Animated background */}
@@ -13,16 +20,12 @@ const Hero = () => {
           className="absolute top-20 left-20 w-24 sm:w-32 h-24 sm:h-32 bg-primary-300 rounded-full opacity-20 animate-float"
         />
         <motion.div
-          className="absolute top-40 right-20 sm:right-32 w-16 sm:w-24 h-16 sm:h-24 bg-blue-300 rounded-full opacity-20 animate-float"
-          style={{ animationDelay: '1s' }}
-        />
-        <motion.div
           className="absolute bottom-32 left-1/4 w-16 sm:w-20 h-16 sm:h-20 bg-secondary-300 rounded-full opacity-20 animate-float"
           style={{ animationDelay: '2s' }}
         />
       </div>
 
-      <div className="container mx-auto relative z-10 max-w-7xl">
+      <div className="container mx-auto relative z-10 max-w-8xl">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left content */}
           <motion.div
@@ -37,8 +40,8 @@ const Hero = () => {
                transition={{ duration: 0.8, delay: 0.2 }}
                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-800 mb-6 leading-tight"
              >
-               Воздушные шары в{' '}
-               <span className="bg-gradient-to-r from-primary-500 to-secondary-600 bg-clip-text text-transparent animate-gradient">
+               Воздушные шары <br />в{' '}
+               <span className="bg-gradient-to-r from-pink-500 to-purple-600 from-primary-500 to-secondary-600 bg-clip-text text-transparent animate-gradient">
                  Ростове-на-Дону
                </span>
              </motion.h1>
@@ -50,69 +53,83 @@ const Hero = () => {
                className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
              >
                Качественные воздушные шары для любого праздника! 
-               Доставка по всему городу от 4000₽. Самовывоз в центре.
+               Доставка по всему городу 24/7.
              </motion.p>
 
              <motion.div
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.8, delay: 0.6 }}
-               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
+               className="lg:justify-start mb-12"
              >
                <motion.button
                  whileHover={{ scale: 1.05 }}
                  whileTap={{ scale: 0.95 }}
-                 className="bg-gradient-to-r from-primary-500 to-secondary-600 text-white px-6 py-4 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg flex items-center justify-center gap-2 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                 onClick={scrollToContact}
+                 className="flex flex-row items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-12 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-shadow"
                >
+                 <ShoppingCart className="w-5 h-5" />
                  Заказать шары
                </motion.button>
                
-               <motion.button
-                 whileHover={{ scale: 1.05 }}
-                 whileTap={{ scale: 0.95 }}
-                 className="border-2 border-secondary-500 text-secondary-600 px-6 py-4 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-secondary-50 transition-all duration-300 hover:scale-105"
-               >
-                 Написать в WhatsApp
-               </motion.button>
+              
              </motion.div>
 
-             {/* Contact Block */}
+             {/* Social Media Buttons */}
              <motion.div
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.8, delay: 0.8 }}
-               className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-200"
+               className="flex flex-wrap gap-3 justify-center lg:justify-start"
              >
-               <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">Свяжитесь с нами</h3>
-               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                 <motion.a
-                   href="https://wa.me/79991234567"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   whileHover={{ scale: 1.05 }}
-                   whileTap={{ scale: 0.95 }}
-                   className="bg-green-500 text-white px-6 py-3 rounded-full font-semibold flex items-center justify-center gap-2 hover:bg-green-600 transition-all duration-300"
-                 >
-                   <span className="text-xl">📱</span>
-                   WhatsApp
-                 </motion.a>
-                 
-                 <motion.a
-                   href="https://t.me/sharikirostov"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   whileHover={{ scale: 1.05 }}
-                   whileTap={{ scale: 0.95 }}
-                   className="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold flex items-center justify-center gap-2 hover:bg-blue-600 transition-all duration-300"
-                 >
-                   <span className="text-xl">✈️</span>
-                   Telegram
-                 </motion.a>
-               </div>
-               <p className="text-sm text-gray-600 mt-4 text-center">
-                 Доставка по всему Ростову-на-Дону от 4000₽
-               </p>
+               <motion.a
+                 whileHover={{ scale: 1.05 }}
+                 whileTap={{ scale: 0.95 }}
+                 href="https://t.me/cloudless_sky"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-shadow"
+               >
+                 <MessageCircle className="w-4 h-4" />
+                 <span>Telegram</span>
+               </motion.a>
+               <motion.a
+                 whileHover={{ scale: 1.05 }}
+                 whileTap={{ scale: 0.95 }}
+                 href="https://api.whatsapp.com/send?phone=79951352313"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-shadow"
+               >
+                 <span className="font-bold">WA</span>
+                 <span>WhatsApp</span>
+               </motion.a>               
+               <motion.a
+                 whileHover={{ scale: 1.05 }}
+                 whileTap={{ scale: 0.95 }}
+                 href="https://vk.com/cloudlessly_sky"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-shadow"
+               >
+                 <span className="font-bold">VK</span>
+                 <span>ВКонтакте</span>
+               </motion.a>
+               <motion.a
+                 whileHover={{ scale: 1.05 }}
+                 whileTap={{ scale: 0.95 }}
+                 href="https://www.instagram.com/cloudlessly_sky"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-shadow"
+               >
+                 <InstagramIcon className="w-4 h-4" />
+                 <span>Instagram</span>
+               </motion.a>
+
+
              </motion.div>
+
           </motion.div>
 
                         {/* Right content - Balloon showcase */}
