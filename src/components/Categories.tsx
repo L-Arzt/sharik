@@ -62,7 +62,7 @@ const categories = [
 
 const Categories = () => {
   return (
-    <section id="main-section" className="py-16 md:py-20 lg:py-24 bg-white">
+    <section id="categories" className="py-16 md:py-20 lg:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

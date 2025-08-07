@@ -18,7 +18,7 @@ const Header = () => {
 
   const navigation = [
     { name: 'Главная', action: () => scrollToSection('main-section') },
-    { name: 'О нас', action: () => scrollToSection('about-section') },
+    { name: 'Категории', action: () => scrollToSection('categories') },
     { name: 'Контакты', action: () => scrollToSection('contact-section') },
   ];
 

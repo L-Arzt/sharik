@@ -263,18 +263,18 @@ const ContactSection = () => {
 
           {/* Contact Info */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 0 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="space-y-8 flex flex-col items-center justify-between my-5"
           >
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <div className=''>
+              <h2 className=" text-2xl font-bold text-gray-800 mb-6 px-6">
                 Контактная информация
               </h2>
               
-              <div className="space-y-6">
+              <div className="flex items-start gap-4 flex-col">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <Phone className="w-6 h-6 text-white" />

@@ -78,17 +78,12 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#about-section" className="text-gray-300 hover:text-white transition-colors">
-                  О нас
+                  Категории
                 </a>
               </li>
               <li>
                 <a href="#contact-section" className="text-gray-300 hover:text-white transition-colors">
                   Контакты
-                </a>
-              </li>
-              <li>
-                <a href="/catalog" className="text-gray-300 hover:text-white transition-colors">
-                  Каталог
                 </a>
               </li>
             </ul>
@@ -179,7 +174,7 @@ const Footer = () => {
             © {currentYear} ШарикиРостов.рф. Все права защищены.
           </p>
           
-          <div className="flex space-x-6 text-sm">
+          <div className="flex space-x-6 text-sm flex-wrap">
             <a href="/privacy" className="text-gray-400 hover:text-white transition-colors">
               Политика конфиденциальности
             </a>

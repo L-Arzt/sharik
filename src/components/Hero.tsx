@@ -13,7 +13,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
+    <section id="main-section" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
       {/* Animated background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-blue-50 to-secondary-50">
         <motion.div
@@ -60,7 +60,7 @@ const Hero = () => {
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.8, delay: 0.6 }}
-               className="lg:justify-start mb-12"
+               className="flex justify-center lg:justify-start mb-12"
              >
                <motion.button
                  whileHover={{ scale: 1.05 }}

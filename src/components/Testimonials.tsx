@@ -57,7 +57,7 @@ const Testimonials = () => {
             Отзывы наших клиентов
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Что говорят о нас довольные клиенты
+            Что говорят Категории довольные клиенты
           </p>
         </motion.div>
 
