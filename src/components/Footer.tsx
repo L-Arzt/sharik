@@ -184,10 +184,10 @@ const Footer = () => {
             <a href="/sitemap.xml" className="text-gray-400 hover:text-white transition-colors">
               Карта сайта
             </a>
-          </div> */}
+          </div>
+        </div> */}
       </div>
-    </div>
-    </footer >
+    </footer>
   );
 };
 
