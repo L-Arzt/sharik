@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const TELEGRAM_BOT_TOKEN = '8351042929:AAFb0fB6OwK5peG34Qr9tSkDrDz_ynptvP4';
-const TELEGRAM_CHAT_ID = '7285683519'; // Временный Chat ID - замените на ваш
+const TELEGRAM_CHAT_ID = '7285683519';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, phone, email, eventType, message } = body;
+    const { name, phone, email, eventType, eventDate, eventTime, message } = body;
 
     // Формируем сообщение для Telegram
     const telegramMessage = `
@@ -16,6 +16,8 @@ export async function POST(request: NextRequest) {
 📱 *Телефон:* ${phone}
 📧 *Email:* ${email || 'Не указан'}
 🎉 *Тип мероприятия:* ${eventType || 'Не указан'}
+📅 *Дата мероприятия:* ${eventDate || 'Не указана'}
+⏰ *Время мероприятия:* ${eventTime || 'Не указано'}
 💬 *Сообщение:* ${message || 'Не указано'}
 
 ⏰ *Время заявки:* ${new Date().toLocaleString('ru-RU')}
@@ -57,4 +59,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

@@ -16,10 +16,10 @@ const Footer = () => {
               ШарикиРостов.рф
             </h3>
             <p className="text-gray-300 leading-relaxed">
-              Качественные воздушные шары в Ростове-на-Дону! 
+              Качественные Воздушные шары в Ростове-на-Дону и Аксае!
               Доставка по всему городу 24/7.
             </p>
-            
+
             <div className="flex space-x-4">
               <motion.a
                 whileHover={{ scale: 1.1 }}
@@ -31,7 +31,7 @@ const Footer = () => {
               >
                 <span className="font-bold text-sm">VK</span>
               </motion.a>
-              
+
               <motion.a
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -42,11 +42,11 @@ const Footer = () => {
               >
                 <span className="font-bold text-sm">TG</span>
               </motion.a>
-              
+
               <motion.a
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                href="https://api.whatsapp.com/send?phone=79951352313"
+                href="https://api.whatsapp.com/send?phone=79951351323"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center text-white hover:shadow-lg transition-shadow"
@@ -99,21 +99,21 @@ const Footer = () => {
                   <p className="text-gray-300">+7 (995) 135-13-23</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-purple-400 mt-0.5" />
                 <div>
                   <p className="text-gray-300">sharikirostov61@mail.ru</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-purple-400 mt-0.5" />
                 <div>
                   <p className="text-gray-300">г. Ростов-на-Дону</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <Clock className="w-5 h-5 text-purple-400 mt-0.5" />
                 <div>
@@ -136,7 +136,7 @@ const Footer = () => {
               <p className="text-sm text-gray-400">Гарантия на все товары</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
               <Truck className="w-5 h-5 text-white" />
@@ -146,7 +146,7 @@ const Footer = () => {
               <p className="text-sm text-gray-400">По всему городу 24/7</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center">
               <Shield className="w-5 h-5 text-white" />
@@ -156,7 +156,7 @@ const Footer = () => {
               <p className="text-sm text-gray-400">Защищенные платежи</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-full flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" />
@@ -169,11 +169,11 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
+        {/* <div className="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm">
             © {currentYear} ШарикиРостов.рф. Все права защищены.
           </p>
-          
+
           <div className="flex space-x-6 text-sm flex-wrap">
             <a href="/privacy" className="text-gray-400 hover:text-white transition-colors">
               Политика конфиденциальности
@@ -185,7 +185,7 @@ const Footer = () => {
               Карта сайта
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
     </footer>
   );

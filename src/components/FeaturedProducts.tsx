@@ -3,16 +3,16 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Star, Heart, Eye, ChevronDown } from 'lucide-react';
-
+import Link from 'next/link';
 const products = [
   {
     id: 1,
     name: 'Набор "Гендер-пати"',
     description: 'Элегантная композиция из розовых или голубых шаров в коробке',
-    price: 5000,
-    oldPrice: 6000,
-    rating: 4.8,
-    reviews: 21,
+    price: 6500,
+    oldPrice: 7000,
+    rating: 5,
+    reviews: 14,
     image: '/images/pic1.jpg',
     category: 'Гендер-пати',
     inStock: true,
@@ -22,10 +22,10 @@ const products = [
     id: 2,
     name: 'Набор "День рождения"',
     description: 'Яркие разноцветные шары для любого праздника',
-    price: 9500,
-    oldPrice: 11000,
+    price: 15200,
+    oldPrice: 16500,
     rating: 5,
-    reviews: 58,
+    reviews: 23,
     image: '/images/pic2.jpg',
     category: 'День рождения',
     inStock: true,
@@ -35,10 +35,10 @@ const products = [
     id: 3,
     name: 'Набор "Детский"',
     description: 'Шары для детского праздника с любимыми персонажами',
-    price: 6200,
-    oldPrice: 8000,
-    rating: 4.7,
-    reviews: 56,
+    price: 9000,
+    oldPrice: 10100,
+    rating: 5,
+    reviews: 19,
     image: '/images/pic3.jpg',
     category: 'Корпоратив',
     inStock: true,
@@ -48,9 +48,9 @@ const products = [
     id: 4,
     name: 'Набор "Свадьба"',
     description: 'Эксклюзивная композиция с новой фамилией молодожёнов',
-    price: 4900,
+    price: 5500,
     oldPrice: 6500,
-    rating: 5.0,
+    rating: 5,
     reviews: 34,
     image: '/images/pic4.jpg',
     category: 'Премиум',
@@ -177,14 +177,15 @@ const FeaturedProducts = () => {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <motion.a
-            href="https://t.me/cloudless_sky"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-shadow"
-          >
-            Смотреть все товары
-          </motion.a>
+          <Link href="/catalog">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-shadow"
+            >
+              Смотреть все товары
+            </motion.button>
+          </Link>
         </motion.div>
       </div>
     </section>

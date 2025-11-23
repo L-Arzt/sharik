@@ -1,0 +1,246 @@
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = .env.local("DATABASE_URL")
+}
+
+// model Category {
+//   id          String    @id @default(cuid())
+//   name        String
+//   slug        String    @unique // Используем slug как основной идентификатор для URL
+//   parentId    String?
+//   parent      Category? @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: Cascade)
+//   children    Category[] @relation("CategoryToCategory")
+//   products    ProductCategory[]
+//   // Новые поля для улучшения работы
+//   description String?   // Описание категории
+//   displayOrder Int      @default(0)  // Порядок отображения
+//   isActive    Boolean   @default(true)  // Активна ли категория
+//   createdAt   DateTime  @default(now())
+//   updatedAt   DateTime  @updatedAt
+
+//   @@index([parentId])
+//   @@index([slug])
+//   @@index([isActive])
+//   @@index([displayOrder])
+//   @@index([parentId, displayOrder])
+// }
+
+// model Product {
+//   id              String            @id @default(cuid())
+//   name            String
+//   slug            String            @unique // Основной идентификатор для URL
+//   price           String            // Храним как строку, т.к. формат "4 345 р."
+//   priceNumeric    Float?            // Числовое значение для сортировки
+//   productCode     String?
+//   descriptionText String?           @default("") // Основное описание без HTML
+//   // Новые поля для улучшения работы с данными
+//   isActive        Boolean           @default(true)  // Активен ли товар
+//   inStock         Boolean           @default(true)  // Есть ли в наличии
+//   tags            String?           // Теги через запятую для дополнительной фильтрации
+//   searchText      String?           // Нормализованный текст для поиска (name + description + composition)
+//   displayOrder    Int               @default(0)     // Порядок отображения
+//   views           Int               @default(0)     // Количество просмотров
+//   categories      ProductCategory[]
+//   images          ProductImage[]
+//   descriptionItems ProductDescriptionItem[]
+//   compositionItems ProductCompositionItem[]
+//   specifications  ProductSpecification[]
+//   categoryPaths   ProductCategoryPath[]
+//   createdAt       DateTime          @default(now())
+//   updatedAt       DateTime          @updatedAt
+
+//   @@index([slug])
+//   @@index([priceNumeric])
+//   @@index([name])
+//   @@index([isActive])
+//   @@index([inStock])
+//   @@index([displayOrder])
+//   @@index([createdAt])
+//   // Составной индекс для частых запросов
+//   @@index([isActive, inStock, priceNumeric])
+// }
+
+// // Отдельные записи для каждого элемента описания (бывшие <li> из descriptionHtml)
+// model ProductDescriptionItem {
+//   id          String   @id @default(cuid())
+//   productId   String
+//   product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   text        String   // Текст элемента описания (без HTML)
+//   order       Int      @default(0) // Порядок отображения
+//   createdAt   DateTime @default(now())
+
+//   @@index([productId])
+//   @@index([productId, order])
+// }
+
+// // Отдельные записи для каждого элемента состава
+// model ProductCompositionItem {
+//   id          String   @id @default(cuid())
+//   productId   String
+//   product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   text        String   // Текст элемента состава
+//   order       Int      @default(0) // Порядок отображения
+//   createdAt   DateTime @default(now())
+
+//   @@index([productId])
+//   @@index([productId, order])
+// }
+
+// // Отдельные записи для каждой спецификации (key-value пары)
+// model ProductSpecification {
+//   id          String   @id @default(cuid())
+//   productId   String
+//   product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   key         String   // Ключ спецификации (например, "Тип")
+//   value       String   // Значение спецификации (например, "Букеты и композиции")
+//   order       Int      @default(0) // Порядок отображения
+//   createdAt   DateTime @default(now())
+
+//   @@index([productId])
+//   @@index([productId, order])
+//   @@index([key])
+// }
+
+// // Отдельные записи для каждой части пути категории
+// model ProductCategoryPath {
+//   id          String   @id @default(cuid())
+//   productId   String
+//   product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   pathPart    String   // Часть пути (например, "По событиям", "Шары на Д")
+//   order       Int      @default(0) // Порядок в пути (0 = первая часть, 1 = вторая и т.д.)
+//   createdAt   DateTime @default(now())
+
+//   @@index([productId])
+//   @@index([productId, order])
+// }
+
+// model ProductCategory {
+//   id         String   @id @default(cuid())
+//   productId  String
+//   categoryId String
+//   product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+//   @@unique([productId, categoryId])
+//   @@index([productId])
+//   @@index([categoryId])
+// }
+
+// model ProductImage {
+//   id                String   @id @default(cuid())
+//   productId         String
+//   product           Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   localPath         String?
+//   relativePath      String?
+//   filename          String?
+//   imageOrder        Int      @default(0)
+//   isPrimary         Boolean  @default(false)
+//   createdAt         DateTime @default(now())
+
+//   @@index([productId])
+//   @@index([isPrimary])
+// }
+
+
+
+
+
+model Product {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String?  @unique
+  price         String
+  priceNumeric  Float?
+  
+  descriptionText String?
+  descriptionItems String?  // JSON в виде строки
+  compositionItems String?  // JSON в виде строки
+  specifications   String?  // JSON в виде строки
+  
+  searchText    String?
+  productCode   String?
+  tags          String?
+  
+  isActive      Boolean  @default(true)
+  inStock       Boolean  @default(true)
+  views         Int      @default(0)
+  displayOrder  Int      @default(0)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  images        ProductImage[]
+  categories    ProductCategory[]
+  categoryPaths ProductCategoryPath[]
+  
+  @@index([slug])
+  @@index([isActive])
+  @@index([priceNumeric])
+  @@map("products")
+}
+
+
+model Category {
+  id          String   @id
+  name        String
+  slug        String   @unique
+  parentId    String?
+  description String?   // Без @db.Text
+  
+  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children    Category[] @relation("CategoryHierarchy")
+  products    ProductCategory[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([parentId])
+  @@map("categories")
+}
+
+// Остальные модели без изменений
+model ProductCategory {
+  id         String   @id @default(cuid())
+  productId  String
+  categoryId String
+  
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  @@unique([productId, categoryId])
+  @@map("product_categories")
+}
+
+model ProductImage {
+  id           String  @id @default(cuid())
+  productId    String
+  relativePath String?
+  localPath    String?
+  filename     String?
+  imageOrder   Int     @default(0)
+  isPrimary    Boolean @default(false)
+  
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@index([productId])
+  @@map("product_images")
+}
+
+model ProductCategoryPath {
+  id        String @id @default(cuid())
+  productId String
+  pathPart  String
+  order     Int
+  
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@index([productId])
+  @@map("product_category_paths")
+}

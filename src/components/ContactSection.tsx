@@ -10,6 +10,8 @@ const ContactSection = () => {
     phone: '+7 (',
     email: '',
     eventType: '',
+    eventDate: '', // ДОБАВЛЕНО
+    eventTime: '', // ДОБАВЛЕНО
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,33 +23,33 @@ const ContactSection = () => {
   const formatPhoneNumber = (value: string) => {
     // Удаляем все нецифровые символы, кроме начального +7
     const numbers = value.replace(/[^\d+]/g, '');
-    
+
     // Если строка не начинается с +7, возвращаем базовое значение
     if (!numbers.startsWith('+7')) return '+7 (';
-    
+
     // Оставляем только цифры после +7 (максимум 10 цифр)
     const digits = numbers.slice(2).replace(/\D/g, '').slice(0, 10);
-    
+
     // Форматируем введенные цифры
     let formattedValue = '+7 (';
     if (digits.length > 0) formattedValue += digits.slice(0, 3);
     if (digits.length > 3) formattedValue += `) ${digits.slice(3, 6)}`;
     if (digits.length > 6) formattedValue += `-${digits.slice(6, 8)}`;
     if (digits.length > 8) formattedValue += `-${digits.slice(8)}`;
-    
+
     return formattedValue;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
+
     if (name === 'phone') {
       // Запрещаем удаление +7 (
       if (value.length < 4) {
         setFormData(prev => ({ ...prev, phone: '+7 (' }));
         return;
       }
-      
+
       const formattedValue = formatPhoneNumber(value);
       setFormData(prev => ({
         ...prev,
@@ -69,11 +71,11 @@ const ContactSection = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validatePhone(formData.phone)) {
-      setSubmitStatus({ 
-        type: 'error', 
-        message: 'Пожалуйста, введите корректный номер телефона (10 цифр после +7)' 
+      setSubmitStatus({
+        type: 'error',
+        message: 'Пожалуйста, введите корректный номер телефона (10 цифр после +7)'
       });
       return;
     }
@@ -97,12 +99,14 @@ const ContactSection = () => {
 
       if (result.success) {
         setSubmitStatus({ type: 'success', message: result.message });
-        setFormData({ 
-          name: '', 
-          phone: '+7 (', // Сбрасываем к начальному значению
-          email: '', 
-          eventType: '', 
-          message: '' 
+        setFormData({
+          name: '',
+          phone: '+7 (',
+          email: '',
+          eventType: '',
+          eventDate: '', // ДОБАВЛЕНО
+          eventTime: '', // ДОБАВЛЕНО
+          message: ''
         });
       } else {
         setSubmitStatus({ type: 'error', message: result.message });
@@ -136,7 +140,7 @@ const ContactSection = () => {
             Свяжитесь с нами
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Закажите воздушные шары в Ростове-на-Дону! Быстрая доставка по всему городу.
+            Закажите Воздушные шары в Ростове-на-Дону и Аксае! Быстрая доставка по всему городу.
           </p>
         </motion.div>
 
@@ -152,7 +156,7 @@ const ContactSection = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
               Оставить заявку
             </h2>
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -169,23 +173,23 @@ const ContactSection = () => {
                     placeholder="Ваше имя"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Телефон *
                   </label>
-                                     <input
-                     type="tel"
-                     name="phone"
-                     value={formData.phone}
-                     onChange={handleInputChange}
-                     required
-                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                     placeholder="+7 (999) 123-45-67"
-                   />
-                   <p className="text-xs text-gray-500 mt-1">
-                     Введите 10 цифр номера (без +7)
-                   </p>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    placeholder="+7 (999) 123-45-67"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Введите 10 цифр номера (без +7)
+                  </p>
                 </div>
               </div>
 
@@ -207,7 +211,7 @@ const ContactSection = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Тип мероприятия
                 </label>
-                <select 
+                <select
                   name="eventType"
                   value={formData.eventType}
                   onChange={handleInputChange}
@@ -221,6 +225,36 @@ const ContactSection = () => {
                   <option value="Праздник">Праздник</option>
                   <option value="Другое">Другое</option>
                 </select>
+              </div>
+
+              {/* ДОБАВЛЕНО: Дата и время */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Дата мероприятия
+                  </label>
+                  <input
+                    type="date"
+                    name="eventDate"
+                    value={formData.eventDate}
+                    onChange={handleInputChange}
+                    min={new Date().toISOString().split('T')[0]}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Время мероприятия
+                  </label>
+                  <input
+                    type="time"
+                    name="eventTime"
+                    value={formData.eventTime}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  />
+                </div>
               </div>
 
               <div>
@@ -239,11 +273,10 @@ const ContactSection = () => {
 
               {/* Status Message */}
               {submitStatus.type && (
-                <div className={`p-4 rounded-lg ${
-                  submitStatus.type === 'success' 
-                    ? 'bg-green-100 text-green-700 border border-green-200' 
+                <div className={`p-4 rounded-lg ${submitStatus.type === 'success'
+                    ? 'bg-green-100 text-green-700 border border-green-200'
                     : 'bg-red-100 text-red-700 border border-red-200'
-                }`}>
+                  }`}>
                   {submitStatus.message}
                 </div>
               )}
@@ -273,7 +306,7 @@ const ContactSection = () => {
               <h2 className=" text-2xl font-bold text-gray-800 mb-6 px-6">
                 Контактная информация
               </h2>
-              
+
               <div className="flex items-start gap-4 flex-col">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
@@ -333,11 +366,11 @@ const ContactSection = () => {
                   <MessageCircle className="w-5 h-5" />
                   <span>Telegram</span>
                 </motion.a>
-                
+
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  href="https://api.whatsapp.com/send?phone=79951352313"
+                  href="https://api.whatsapp.com/send?phone=79951351323"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 rounded-lg font-semibold hover:shadow-lg transition-shadow"
