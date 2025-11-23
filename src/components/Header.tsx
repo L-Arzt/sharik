@@ -47,8 +47,8 @@ const Header = () => {
 
   const navigation = [
     { name: 'Главная', action: () => scrollToSection('main-section'), href: '/' },
-    { name: 'Каталог', action: null, href: '/catalog' },
-    { name: 'Контакты', action: () => scrollToSection('contact-section'), href: null },
+    { name: 'Каталог', action: undefined, href: '/catalog' },
+    { name: 'Контакты', action: () => scrollToSection('contact-section'), href: undefined },
   ];
 
   return (

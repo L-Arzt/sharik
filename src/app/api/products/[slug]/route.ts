@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+type ProductWithJsonFields = {
+  descriptionItems?: string;
+  compositionItems?: string;
+  specifications?: string;
+};
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }  // Изменено: Promise<...>
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params;
@@ -35,8 +41,6 @@ export async function GET(
         categoryPaths: {
           orderBy: { order: 'asc' },
         },
-        // УБРАНО: descriptionItems, compositionItems, specifications
-        // Теперь это JSON поля, а не отдельные таблицы
       },
     });
 
@@ -56,14 +60,14 @@ export async function GET(
     // Парсим JSON строки обратно в массивы/объекты
     const productWithParsedJson = {
       ...product,
-      descriptionItems: product.descriptionItems 
-        ? JSON.parse(product.descriptionItems as string) 
+      descriptionItems: (product as ProductWithJsonFields).descriptionItems
+        ? JSON.parse((product as ProductWithJsonFields).descriptionItems as string)
         : null,
-      compositionItems: product.compositionItems 
-        ? JSON.parse(product.compositionItems as string) 
+      compositionItems: (product as ProductWithJsonFields).compositionItems
+        ? JSON.parse((product as ProductWithJsonFields).compositionItems as string)
         : null,
-      specifications: product.specifications 
-        ? JSON.parse(product.specifications as string) 
+      specifications: (product as ProductWithJsonFields).specifications
+        ? JSON.parse((product as ProductWithJsonFields).specifications as string)
         : null,
     };
 

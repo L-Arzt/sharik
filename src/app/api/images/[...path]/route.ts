@@ -4,10 +4,12 @@ import * as path from 'path';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }  // Изменено: Promise<...>
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    const imagePath = params.path.join('/');
+    const { path: pathArray } = await params;  // ИСПРАВЛЕНО
+    const imagePath = pathArray.join('/');
+    
     // Путь к изображениям (на уровень выше проекта sharik)
     const fullPath = path.join(process.cwd(), '..', 'parsing_shar', 'downloaded_images', imagePath);
 
@@ -52,4 +54,3 @@ export async function GET(
     );
   }
 }
-

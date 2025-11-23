@@ -1,10 +1,12 @@
 'use client';
 
+
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart, Trash2, Minus, Plus, ChevronRight, ArrowLeft, X, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { ShoppingCart, Trash2, Minus, Plus, ChevronRight, ArrowLeft, X, Send, CheckCircle} from 'lucide-react';
 import { getCart, removeFromCart, updateCartQuantity, getCartTotal, clearCart, CartItem, setActiveOrder, getActiveOrder, clearActiveOrder, ActiveOrder } from '@/lib/cart';
+
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -14,6 +16,7 @@ export default function CartPage() {
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [activeOrder, setActiveOrderState] = useState<ActiveOrder | null>(null);
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
+
 
   const [formData, setFormData] = useState({
     name: '',
@@ -25,10 +28,12 @@ export default function CartPage() {
     comment: ''
   });
 
+
   useEffect(() => {
     setCart(getCart());
     setActiveOrderState(getActiveOrder());
     setLoading(false);
+
 
     const handleCartUpdate = () => setCart(getCart());
     const handleOrderUpdate = () => setActiveOrderState(getActiveOrder());
@@ -42,6 +47,7 @@ export default function CartPage() {
     };
   }, []);
 
+
   // ИСПРАВЛЕНО: Сначала объявляем total, потом используем его
   const total = getCartTotal();
   
@@ -52,6 +58,7 @@ export default function CartPage() {
   // Вычисляем стоимость доставки
   const deliveryCost = total >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_COST;
   const finalTotal = total + deliveryCost;
+
 
   const formatPhoneNumber = (value: string) => {
     const numbers = value.replace(/[^\d+]/g, '');
@@ -64,6 +71,7 @@ export default function CartPage() {
     if (digits.length > 8) formattedValue += `-${digits.slice(8)}`;
     return formattedValue;
   };
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -79,13 +87,16 @@ export default function CartPage() {
     }
   };
 
+
   const validatePhone = (phone: string) => {
     const numbers = phone.replace(/\D/g, '').slice(1);
     return numbers.length === 10;
   };
 
+
 const handleSubmitOrder = async (e: React.FormEvent) => {
   e.preventDefault();
+
 
   if (!validatePhone(formData.phone)) {
     setSubmitStatus({
@@ -95,8 +106,10 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
     return;
   }
 
+
   setIsSubmitting(true);
   setSubmitStatus({ type: null, message: '' });
+
 
   try {
     const orderId = `ORD-${Date.now()}`;
@@ -105,6 +118,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
     // Вычисляем доставку
     const deliveryCost = total >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_COST;
     const finalTotal = total + deliveryCost;
+
 
     const response = await fetch('/api/order', {
       method: 'POST',
@@ -119,7 +133,9 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
       }),
     });
 
+
     const result = await response.json();
+
 
     if (result.success) {
       const order: ActiveOrder = {
@@ -149,7 +165,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
     } else {
       setSubmitStatus({ type: 'error', message: result.message || 'Ошибка при оформлении заказа' });
     }
-  } catch (error) {
+  } catch {
     setSubmitStatus({ type: 'error', message: 'Ошибка при отправке заказа. Попробуйте позже.' });
   } finally {
     setIsSubmitting(false);
@@ -157,10 +173,12 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
 };
 
 
+
   const handleCancelOrder = async () => {
     if (!activeOrder) return;
     
     if (!confirm('Вы действительно хотите отменить заказ?')) return;
+
 
     try {
       const response = await fetch('/api/order/cancel', {
@@ -169,7 +187,9 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
         body: JSON.stringify({ order: activeOrder }),
       });
 
+
       const result = await response.json();
+
 
       if (result.success) {
         clearActiveOrder();
@@ -177,16 +197,18 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
       } else {
         alert('Ошибка при отмене заказа. Пожалуйста, позвоните нам.');
       }
-    } catch (error) {
+    } catch {
       alert('Ошибка при отмене заказа. Пожалуйста, позвоните нам.');
     }
   };
+
 
   const handleCloseOrderForm = () => {
     setShowOrderForm(false);
     setOrderSuccess(false);
     setSubmitStatus({ type: null, message: '' });
   };
+
 
   if (loading) {
     return (
@@ -195,6 +217,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
@@ -205,6 +228,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
           <ChevronRight size={16} />
           <span className="text-gray-900">Корзина</span>
         </div>
+
 
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -219,6 +243,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
             Продолжить покупки
           </Link>
         </div>
+
 
         {/* Уведомление об активном заказе */}
         {activeOrder && (
@@ -260,6 +285,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
           </div>
         )}
 
+
         {cart.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-sm p-12 text-center">
             <div className="bg-blue-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -291,6 +317,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     />
                 </Link>
 
+
                 <div className="flex-grow min-w-0 w-full sm:w-auto">
                     <Link href={`/product/${item.slug}`}>
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 hover:text-blue-600 mb-2">
@@ -301,6 +328,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     <div className="flex items-center gap-4 mb-4">
                     <span className="text-xl sm:text-2xl font-bold text-blue-600">{item.price}</span>
                     </div>
+
 
                     <div className="flex items-center justify-between flex-wrap gap-3">
                     <div className="flex items-center border-2 border-gray-200 rounded-lg overflow-hidden">
@@ -321,6 +349,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                         </button>
                     </div>
 
+
                     <div className="flex items-center gap-3">
                         <div className="sm:hidden">
                         <p className="text-sm text-gray-500">Сумма</p>
@@ -328,6 +357,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                             {(item.priceNumeric * item.quantity).toLocaleString('ru-RU')} ₽
                         </p>
                         </div>
+
 
                         <button
                         onClick={() => removeFromCart(item.id)}
@@ -339,6 +369,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     </div>
                 </div>
 
+
                 <div className="hidden sm:block text-right flex-shrink-0">
                     <p className="text-sm text-gray-500 mb-1">Сумма</p>
                     <p className="text-xl font-bold text-gray-900">
@@ -349,7 +380,9 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
             </div>
             ))}
 
+
             </div>
+
 
 <div className="lg:col-span-1">
   <div className="bg-white rounded-2xl shadow-sm p-6 sticky top-24 border border-gray-100">
@@ -370,6 +403,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
       </div>
     </div>
 
+
     {/* Прогресс до бесплатной доставки */}
     {total < FREE_DELIVERY_THRESHOLD && (
       <div className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
@@ -388,6 +422,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
       </div>
     )}
 
+
     {/* Уведомление о бесплатной доставке */}
     {total >= FREE_DELIVERY_THRESHOLD && (
       <div className="mb-6 p-3 bg-green-50 rounded-lg border border-green-200">
@@ -397,10 +432,12 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
       </div>
     )}
 
+
     <div className="flex justify-between text-xl font-bold text-gray-900 mb-6">
       <span>Итого:</span>
       <span className="text-blue-600">{finalTotal.toLocaleString('ru-RU')} ₽</span>
     </div>
+
 
     {activeOrder ? (
       <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
@@ -417,6 +454,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
       </button>
     )}
 
+
     <button
       onClick={() => {
         if (confirm('Очистить корзину?')) clearCart();
@@ -425,6 +463,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
     >
       Очистить корзину
     </button>
+
 
     <div className="mt-6 pt-6 border-t border-gray-100 space-y-3 text-sm text-gray-600">
       <p>🚚 Бесплатная доставка от 5000₽</p>
@@ -436,6 +475,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
           </div>
         )}
       </div>
+
 
       {/* Модальное окно формы заказа */}
       {showOrderForm && (
@@ -452,6 +492,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                 <X size={24} />
               </button>
             </div>
+
 
             {orderSuccess ? (
               // Экран успешного оформления
@@ -503,6 +544,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     />
                   </div>
 
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Телефон *
@@ -518,6 +560,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     />
                   </div>
                 </div>
+
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -536,6 +579,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                   </select>
                 </div>
 
+
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -552,6 +596,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     />
                   </div>
 
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Время доставки *
@@ -566,6 +611,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     />
                   </div>
                 </div>
+
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -582,6 +628,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                   />
                 </div>
 
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Комментарий к заказу
@@ -596,11 +643,13 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                   />
                 </div>
 
+
                 {submitStatus.type === 'error' && (
                   <div className="p-4 rounded-lg bg-red-100 text-red-700 border border-red-200">
                     {submitStatus.message}
                   </div>
                 )}
+
 
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                 <div className="space-y-2">
@@ -623,6 +672,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                 </div>
             <p className="text-sm text-gray-600 mt-2">Оплата при получении</p>
             </div>
+
 
 
                 <button

@@ -1,14 +1,72 @@
 import { MetadataRoute } from 'next'
+import { prisma } from '@/lib/prisma'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://XN--80AERAJZALDLL7D.XN--P1AI'
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = 'https://xn--80atjc1ay.xn--p1ai'
   
-  return [
+  // Получаем все активные товары
+  const products = await prisma.product.findMany({
+    where: { isActive: true },
+    select: { 
+      slug: true, 
+      updatedAt: true 
+    },
+  })
+  
+  // Получаем все категории
+  const categories = await prisma.category.findMany({
+    select: { 
+      slug: true, 
+      updatedAt: true 
+    },
+  })
+  
+  // Статические страницы
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
+    {
+      url: `${baseUrl}/catalog`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/cart`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/favorites`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
   ]
-} 
+  
+  // Динамические страницы товаров
+  const productPages: MetadataRoute.Sitemap = products.map((product) => ({
+    url: `${baseUrl}/product/${product.slug}`,
+    lastModified: product.updatedAt || new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }))
+  
+  // Динамические страницы категорий
+  const categoryPages: MetadataRoute.Sitemap = categories.map((category) => ({
+    url: `${baseUrl}/catalog?category=${category.slug}`,
+    lastModified: category.updatedAt || new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }))
+  
+  return [...staticPages, ...productPages, ...categoryPages]
+}
+
+// Обновляем sitemap каждые 24 часа
+export const revalidate = 86400

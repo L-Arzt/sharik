@@ -21,7 +21,14 @@ export async function POST(request: NextRequest) {
     }
 
     message += `\n🛍 *СОСТАВ ЗАКАЗА:*\n`;
-    cart.forEach((item: any, index: number) => {
+    interface CartItem {
+      name: string;
+      price: string;
+      quantity: number;
+      priceNumeric: number;
+    }
+
+    cart.forEach((item: CartItem, index: number) => {
       message += `\n${index + 1}. ${item.name}\n`;
       message += `   Цена: ${item.price}\n`;
       message += `   Количество: ${item.quantity} шт.\n`;

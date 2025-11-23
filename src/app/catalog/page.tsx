@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,8 +8,10 @@ import { Search, Filter, Grid, List, X, ChevronDown, ChevronRight, ShoppingCart,
 import Link from 'next/link';
 import Image from 'next/image';
 
+
 import { addToCart, addToFavorites, removeFromFavorites, isFavorite, getCartItem, updateCartQuantity, removeFromCart } from '@/lib/cart';
 import { Minus, Plus } from 'lucide-react'; // Добавьте Minus и Plus к импортам
+
 
 // --- Типы данных ---
 interface Category {
@@ -19,6 +22,7 @@ interface Category {
   children?: Category[];
 }
 
+
 interface ProductImage {
   id: string;
   relativePath: string | null;
@@ -26,6 +30,7 @@ interface ProductImage {
   filename: string | null;
   isPrimary: boolean;
 }
+
 
 interface Product {
   id: string;
@@ -44,11 +49,13 @@ interface Product {
   }>;
 }
 
+
 // --- Компонент карточки товара ---
 const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid' | 'list' }) => {
   const [isInFavorites, setIsInFavorites] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
+
 
   useEffect(() => {
     setIsInFavorites(isFavorite(product.id));
@@ -57,15 +64,18 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
     setCartQuantity(cartItem ? cartItem.quantity : 0);
   }, [product.id]);
 
+
   useEffect(() => {
     const handleCartUpdate = () => {
       const cartItem = getCartItem(product.id);
       setCartQuantity(cartItem ? cartItem.quantity : 0);
     };
 
+
     window.addEventListener('cartUpdated', handleCartUpdate);
     return () => window.removeEventListener('cartUpdated', handleCartUpdate);
   }, [product.id]);
+
 
   const getImageUrl = (product: Product): string => {
     if (product.images && product.images.length > 0) {
@@ -76,6 +86,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
     }
     return '/images/pic1.jpg';
   };
+
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -91,15 +102,18 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
       image: imageUrl,
     }, 1);
 
+
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1000);
   };
+
 
   const handleIncreaseQuantity = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     updateCartQuantity(product.id, cartQuantity + 1);
   };
+
 
   const handleDecreaseQuantity = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -110,6 +124,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
       removeFromCart(product.id);
     }
   };
+
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -133,8 +148,10 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
     }
   };
 
+
   const imageUrl = getImageUrl(product);
   const isInCart = cartQuantity > 0;
+
 
   if (viewMode === 'list') {
     return (
@@ -173,6 +190,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
                   <Heart size={20} className={isInFavorites ? 'fill-red-500' : ''} />
                 </button>
 
+
                 {/* Кнопки управления корзиной */}
                 {isInCart && (
                   <button 
@@ -182,6 +200,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
                     <Minus size={20} />
                   </button>
                 )}
+
 
                 <button 
                   onClick={handleAddToCart}
@@ -194,6 +213,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
                   <ShoppingCart size={20} />
                   {isInCart ? `В корзине (${cartQuantity})` : 'В корзину'}
                 </button>
+
 
                 {isInCart && (
                   <button 
@@ -210,6 +230,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
       </Link>
     );
   }
+
 
   return (
     <Link href={`/product/${product.slug || product.id}`}>
@@ -260,6 +281,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
                 </button>
               )}
 
+
               <button 
                 onClick={handleAddToCart}
                 className={`p-2.5 rounded-lg transition-all duration-300 relative ${
@@ -276,6 +298,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
                 )}
               </button>
 
+
               {isInCart && (
                 <button 
                   onClick={handleIncreaseQuantity}
@@ -291,6 +314,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
     </Link>
   );
 };
+
 
 // --- РЕКУРСИВНЫЙ компонент элемента категории ---
 const CategoryItem = ({ 
@@ -312,6 +336,7 @@ const CategoryItem = ({
   const isSelected = selectedCategory === category.id;
   const isExpanded = expanded[category.id];
 
+
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onSelect(category.id);
@@ -319,6 +344,7 @@ const CategoryItem = ({
       toggleExpand(category.id, e);
     }
   };
+
 
   return (
     <div className="space-y-1">
@@ -344,6 +370,7 @@ const CategoryItem = ({
           </span>
         )}
       </button>
+
 
       <AnimatePresence>
         {isExpanded && hasChildren && (
@@ -371,6 +398,7 @@ const CategoryItem = ({
   );
 };
 
+
 // --- Компонент дерева категорий ---
 const CategoryTree = ({ 
   categories, 
@@ -383,12 +411,14 @@ const CategoryTree = ({
 }) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
-  const toggleExpand = (id: string, e: React.MouseEvent) => {
+
+  const toggleExpand = useCallback((id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
-  };
+  }, []);
 
-  const findPathToCategory = (cats: Category[], targetId: string, path: string[] = []): string[] | null => {
+
+  const findPathToCategory = useCallback((cats: Category[], targetId: string, path: string[] = []): string[] | null => {
     for (const cat of cats) {
       const currentPath = [...path, cat.id];
       if (cat.id === targetId) {
@@ -400,20 +430,24 @@ const CategoryTree = ({
       }
     }
     return null;
-  };
+  }, []);
+
 
   useEffect(() => {
     if (selectedCategory && categories.length > 0) {
       const path = findPathToCategory(categories, selectedCategory);
       if (path) {
-        const newExpanded = { ...expanded };
-        path.slice(0, -1).forEach(id => {
-          newExpanded[id] = true;
+        setExpanded(prev => {
+          const newExpanded = { ...prev };
+          path.slice(0, -1).forEach(id => {
+            newExpanded[id] = true;
+          });
+          return newExpanded;
         });
-        setExpanded(newExpanded);
       }
     }
-  }, [selectedCategory, categories]);
+  }, [selectedCategory, categories, findPathToCategory]);
+
 
   return (
     <div className="space-y-1">
@@ -443,11 +477,13 @@ const CategoryTree = ({
   );
 };
 
+
 // --- Основной контент каталога ---
 function CatalogContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -455,13 +491,16 @@ function CatalogContent() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
+
   const currentCategory = searchParams.get('category');
   const searchQuery = searchParams.get('search') || '';
   const currentPage = Number(searchParams.get('page')) || 1;
   const currentSort = searchParams.get('sort') || 'name';
   const currentOrder = searchParams.get('order') || 'asc';
 
+
   const [totalPages, setTotalPages] = useState(1);
+
 
   const [minPrice, setMinPrice] = useState<string>(() => searchParams.get('minPrice') || '');
   const [maxPrice, setMaxPrice] = useState<string>(() => searchParams.get('maxPrice') || '');
@@ -470,6 +509,7 @@ function CatalogContent() {
     setMinPrice(searchParams.get('minPrice') || '');
     setMaxPrice(searchParams.get('maxPrice') || '');
   }, [searchParams]);
+
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -488,7 +528,7 @@ function CatalogContent() {
           return;
         }
         
-        const buildTree = (cats: any[]): Category[] => {
+        const buildTree = (cats: Category[]): Category[] => {
           if (!cats || cats.length === 0) {
             return [];
           }
@@ -520,6 +560,7 @@ function CatalogContent() {
     loadCategories();
   }, []);
 
+
   useEffect(() => {
     const loadProducts = async () => {
       setLoading(true);
@@ -531,6 +572,7 @@ function CatalogContent() {
           sortOrder: currentOrder,
         });
 
+
         if (currentCategory) params.append('categoryId', currentCategory);
         if (searchQuery) params.append('search', searchQuery);
         
@@ -538,6 +580,7 @@ function CatalogContent() {
         const maxPrice = searchParams.get('maxPrice');
         if (minPrice) params.append('minPrice', minPrice);
         if (maxPrice) params.append('maxPrice', maxPrice);
+
 
         const res = await fetch(`/api/products?${params.toString()}`);
         const data = await res.json();
@@ -551,8 +594,10 @@ function CatalogContent() {
       }
     };
 
+
     loadProducts();
   }, [currentCategory, searchQuery, currentPage, currentSort, currentOrder, searchParams]);
+
 
   const updateUrl = useCallback((params: Record<string, string | null>) => {
     const newParams = new URLSearchParams(searchParams.toString());
@@ -565,12 +610,15 @@ function CatalogContent() {
       }
     });
 
+
     if (!params.page) {
       newParams.set('page', '1');
     }
 
+
     router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
   }, [searchParams, pathname, router]);
+
 
 // В CatalogContent, найдите и замените эту функцию:
   const handleCategorySelect = (categoryId: string | null) => {
@@ -608,12 +656,14 @@ function CatalogContent() {
   };
 
 
+
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const query = formData.get('search') as string;
     updateUrl({ search: query || null, page: '1' });
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-8">
@@ -627,6 +677,7 @@ function CatalogContent() {
             <span className="text-gray-900">Каталог</span>
           </div>
         </div>
+
 
         <div className="flex flex-col lg:flex-row gap-8">
           
@@ -645,6 +696,7 @@ function CatalogContent() {
                 </button>
               </div>
 
+
               <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100 mb-6">
                 <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <Filter size={18} className="text-blue-600" />
@@ -656,6 +708,7 @@ function CatalogContent() {
                   onSelect={handleCategorySelect} 
                 />
               </div>
+
 
               <div className="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
                 <h3 className="font-bold text-gray-900 mb-4">Цена</h3>
@@ -698,6 +751,7 @@ function CatalogContent() {
               </div>
             </div>
 
+
             {showMobileFilters && (
               <div 
                 className="fixed inset-0 bg-black/50 -z-1 lg:hidden" 
@@ -705,6 +759,7 @@ function CatalogContent() {
               />
             )}
           </aside>
+
 
           {/* MAIN CONTENT */}
           <main className="flex-1">
@@ -719,6 +774,7 @@ function CatalogContent() {
                 Фильтры
               </button>
 
+
               <form onSubmit={handleSearch} className="relative w-full sm:max-w-md">
                 <input 
                   name="search"
@@ -729,11 +785,12 @@ function CatalogContent() {
                 <Search className="absolute left-3 top-3 text-gray-400" size={20} />
               </form>
 
+
               <div className="flex items-center gap-4 w-full sm:w-auto justify-end">
                 <select 
-                  value={`${currentSort}-${currentOrder}`} // ИЗМЕНЕНО: комбинируем sort и order
+                  value={`${currentSort}-${currentOrder}`}
                   onChange={(e) => {
-                    const [sort, order] = e.target.value.split('-'); // ИЗМЕНЕНО: разделяем значение
+                    const [sort, order] = e.target.value.split('-');
                     updateUrl({ sort, order });
                   }}
                   className="border-none bg-gray-50 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 focus:ring-0 cursor-pointer hover:bg-gray-100"
@@ -743,6 +800,7 @@ function CatalogContent() {
                   <option value="price-asc">По цене (дешевле)</option>
                   <option value="price-desc">По цене (дороже)</option>
                 </select>
+
 
                 <div className="flex bg-gray-50 rounded-lg p-1 border border-gray-200">
                   <button 
@@ -760,6 +818,7 @@ function CatalogContent() {
                 </div>
               </div>
             </div>
+
 
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -799,6 +858,7 @@ function CatalogContent() {
               </div>
             )}
 
+
             {!loading && totalPages > 1 && (
               <div className="mt-12 flex justify-center gap-2">
                 <button
@@ -826,6 +886,7 @@ function CatalogContent() {
     </div>
   );
 }
+
 
 export default function CatalogPage() {
   return (

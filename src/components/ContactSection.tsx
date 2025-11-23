@@ -1,8 +1,10 @@
 'use client';
 
+
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle, InstagramIcon } from 'lucide-react';
 import { useState } from 'react';
+
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -20,15 +22,19 @@ const ContactSection = () => {
     message: string;
   }>({ type: null, message: '' });
 
+
   const formatPhoneNumber = (value: string) => {
     // Удаляем все нецифровые символы, кроме начального +7
     const numbers = value.replace(/[^\d+]/g, '');
 
+
     // Если строка не начинается с +7, возвращаем базовое значение
     if (!numbers.startsWith('+7')) return '+7 (';
 
+
     // Оставляем только цифры после +7 (максимум 10 цифр)
     const digits = numbers.slice(2).replace(/\D/g, '').slice(0, 10);
+
 
     // Форматируем введенные цифры
     let formattedValue = '+7 (';
@@ -37,11 +43,14 @@ const ContactSection = () => {
     if (digits.length > 6) formattedValue += `-${digits.slice(6, 8)}`;
     if (digits.length > 8) formattedValue += `-${digits.slice(8)}`;
 
+
     return formattedValue;
   };
 
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+
 
     if (name === 'phone') {
       // Запрещаем удаление +7 (
@@ -49,6 +58,7 @@ const ContactSection = () => {
         setFormData(prev => ({ ...prev, phone: '+7 (' }));
         return;
       }
+
 
       const formattedValue = formatPhoneNumber(value);
       setFormData(prev => ({
@@ -63,14 +73,17 @@ const ContactSection = () => {
     }
   };
 
+
   const validatePhone = (phone: string) => {
     // Проверяем, что номер содержит 10 цифр после +7
     const numbers = phone.replace(/\D/g, '').slice(1); // Убираем + и оставляем только цифры
     return numbers.length === 10;
   };
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
 
     if (!validatePhone(formData.phone)) {
       setSubmitStatus({
@@ -80,8 +93,10 @@ const ContactSection = () => {
       return;
     }
 
+
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: '' });
+
 
     try {
       const response = await fetch('/api/contact', {
@@ -95,7 +110,9 @@ const ContactSection = () => {
         }),
       });
 
+
       const result = await response.json();
+
 
       if (result.success) {
         setSubmitStatus({ type: 'success', message: result.message });
@@ -111,12 +128,13 @@ const ContactSection = () => {
       } else {
         setSubmitStatus({ type: 'error', message: result.message });
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus({ type: 'error', message: 'Ошибка при отправке заявки. Попробуйте позже.' });
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
 
   // const scrollToContact = () => {
@@ -125,6 +143,7 @@ const ContactSection = () => {
   //     contactSection.scrollIntoView({ behavior: 'smooth' });
   //   }
   // };
+
 
   return (
     <section id="contact-section" className="py-16 md:py-20 bg-gradient-to-br from-blue-50 via-white to-red-50">
@@ -144,6 +163,7 @@ const ContactSection = () => {
           </p>
         </motion.div>
 
+
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Contact Form */}
           <motion.div
@@ -156,6 +176,7 @@ const ContactSection = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
               Оставить заявку
             </h2>
+
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
@@ -173,6 +194,7 @@ const ContactSection = () => {
                     placeholder="Ваше имя"
                   />
                 </div>
+
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -193,6 +215,7 @@ const ContactSection = () => {
                 </div>
               </div>
 
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Email
@@ -206,6 +229,7 @@ const ContactSection = () => {
                   placeholder="your@email.com"
                 />
               </div>
+
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -227,6 +251,7 @@ const ContactSection = () => {
                 </select>
               </div>
 
+
               {/* ДОБАВЛЕНО: Дата и время */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -243,6 +268,7 @@ const ContactSection = () => {
                   />
                 </div>
 
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Время мероприятия
@@ -256,6 +282,7 @@ const ContactSection = () => {
                   />
                 </div>
               </div>
+
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -271,6 +298,7 @@ const ContactSection = () => {
                 />
               </div>
 
+
               {/* Status Message */}
               {submitStatus.type && (
                 <div className={`p-4 rounded-lg ${submitStatus.type === 'success'
@@ -280,6 +308,7 @@ const ContactSection = () => {
                   {submitStatus.message}
                 </div>
               )}
+
 
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -294,6 +323,7 @@ const ContactSection = () => {
             </form>
           </motion.div>
 
+
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: 0 }}
@@ -307,6 +337,7 @@ const ContactSection = () => {
                 Контактная информация
               </h2>
 
+
               <div className="flex items-start gap-4 flex-col">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
@@ -318,6 +349,7 @@ const ContactSection = () => {
                   </div>
                 </div>
 
+
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <Mail className="w-6 h-6 text-white" />
@@ -328,6 +360,7 @@ const ContactSection = () => {
                   </div>
                 </div>
 
+
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-6 h-6 text-white" />
@@ -337,6 +370,7 @@ const ContactSection = () => {
                     <p className="text-gray-600">г. Ростов-на-Дону</p>
                   </div>
                 </div>
+
 
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
@@ -350,6 +384,7 @@ const ContactSection = () => {
                 </div>
               </div>
             </div>
+
 
             {/* Social Links */}
             <div>
@@ -367,6 +402,7 @@ const ContactSection = () => {
                   <span>Telegram</span>
                 </motion.a>
 
+
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -379,6 +415,7 @@ const ContactSection = () => {
                   <span>WhatsApp</span>
                 </motion.a>
 
+
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -390,6 +427,7 @@ const ContactSection = () => {
                   <span className="font-bold">VK</span>
                   <span>ВКонтакте</span>
                 </motion.a>
+
 
                 <motion.a
                   whileHover={{ scale: 1.1 }}
@@ -411,4 +449,5 @@ const ContactSection = () => {
   );
 };
 
-export default ContactSection; 
+
+export default ContactSection;

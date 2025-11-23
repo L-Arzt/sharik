@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Gift, Users, Calendar, Star, Sparkles, Baby, Package, Shapes, CircleDot, RectangleCircle } from 'lucide-react';
+import { Heart, Gift, Calendar, Sparkles, Package, Shapes, CircleDot, RectangleCircle, Users } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
@@ -24,7 +24,14 @@ interface Category {
   slug: string;
   color: string;
   bgColor: string;
-  icon: any;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
+interface FetchedCategory {
+  id: string;
+  name: string;
+  slug: string;
+  parentId?: string | null;
 }
 
 const Categories = () => {
@@ -38,16 +45,16 @@ const Categories = () => {
         
         // Берем только категории верхнего уровня
         const topLevel = data
-          .filter((cat: any) => !cat.parentId)
+          .filter((cat: FetchedCategory) => !cat.parentId)
           .slice(0, 6)
-          .map((cat: any, index: number) => ({
+          .map((cat: FetchedCategory, index: number) => ({
             id: cat.id,
             name: cat.name,
             slug: cat.slug,
             ...colorSchemes[index % colorSchemes.length]
           }));
-        
-        setCategories(topLevel);
+          
+          setCategories(topLevel);
       } catch (error) {
         console.error('Failed to load categories:', error);
       }

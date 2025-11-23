@@ -1,11 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Phone, Mail, MapPin, Clock, Heart, ShoppingCart, Star, Truck, Shield, Instagram } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Heart, Star, Truck, Shield, Instagram } from 'lucide-react';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-gray-900 text-white" itemScope itemType="https://schema.org/Organization">
       <div className="container mx-auto px-4 py-12 md:py-16">

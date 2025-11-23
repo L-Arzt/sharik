@@ -1,16 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { ShoppingCart, Star, Truck, Shield, MessageCircle, InstagramIcon } from 'lucide-react';
+import { ShoppingCart, MessageCircle, InstagramIcon } from 'lucide-react';
 import Link from 'next/link';
 const Hero = () => {
-  const scrollToContact = () => {
-    const contactSection = document.getElementById('contact-section');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <section id="main-section" className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">

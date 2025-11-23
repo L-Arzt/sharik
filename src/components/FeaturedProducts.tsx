@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Star, Heart, Eye, ChevronDown } from 'lucide-react';
+import { Star } from 'lucide-react';
 import Link from 'next/link';
 const products = [
   {

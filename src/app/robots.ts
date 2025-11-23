@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/_next/', '/admin/'],
     },
-    sitemap: 'https://шарикиростов.рф/sitemap.xml',
-    host: 'https://шарикиростов.рф',
+    sitemap: 'https://xn--80atjc1ay.xn--p1ai/sitemap.xml',
+    host: 'https://xn--80atjc1ay.xn--p1ai',
   }
-} 
+}

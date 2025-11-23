@@ -13,7 +13,6 @@ import {
   Share2,
   Truck,
   Shield,
-  RotateCcw,
   TimerIcon
 } from 'lucide-react';
 import { addToCart, addToFavorites, removeFromFavorites, isFavorite, getCartItem, updateCartQuantity } from '@/lib/cart';

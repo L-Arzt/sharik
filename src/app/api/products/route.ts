@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -18,10 +19,12 @@ export async function GET(request: NextRequest) {
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
 
+
     // Строим условия фильтрации
     const where: Prisma.ProductWhereInput = {
       ...(includeInactive ? {} : { isActive: true }),
     };
+
 
     // Фильтр по наличию
     if (inStock === 'true') {
@@ -29,6 +32,7 @@ export async function GET(request: NextRequest) {
     } else if (inStock === 'false') {
       where.inStock = false;
     }
+
 
     // Фильтр по категории (с включением всех подкатегорий)
     if (categoryId) {
@@ -69,6 +73,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
+
     // Улучшенный поиск
     if (search) {
       const searchLower = search.toLowerCase();
@@ -81,6 +86,7 @@ export async function GET(request: NextRequest) {
       ];
     }
 
+
     // Фильтр по тегам
     if (tags) {
       const tagArray = tags.split(',').map(t => t.trim());
@@ -91,6 +97,7 @@ export async function GET(request: NextRequest) {
         })),
       ];
     }
+
 
     // Строим параметры сортировки
     const orderBy: Prisma.ProductOrderByWithRelationInput = {};
@@ -103,8 +110,9 @@ export async function GET(request: NextRequest) {
     } else if (sortBy === 'order') {
       orderBy.displayOrder = sortOrder as 'asc' | 'desc';
     } else {
-      (orderBy as any)[sortBy] = sortOrder as 'asc' | 'desc';
+      orderBy[sortBy as keyof Prisma.ProductOrderByWithRelationInput] = sortOrder as 'asc' | 'desc';
     }
+
 
     // Получаем товары - УБРАНЫ несуществующие include
     const [products, total] = await Promise.all([
@@ -131,6 +139,7 @@ export async function GET(request: NextRequest) {
       }),
       prisma.product.count({ where }),
     ]);
+
 
     // Для каталога не нужно парсить JSON - отдаём как есть
     return NextResponse.json({
