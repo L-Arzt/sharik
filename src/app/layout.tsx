@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next' // ✅ Добавьте импорт Viewport
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
@@ -8,6 +8,13 @@ const inter = Inter({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-inter',
 })
+
+// ✅ Отдельный экспорт viewport
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#3b82f6',
+}
 
 export const metadata: Metadata = {
   title: {
@@ -55,7 +62,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  // ✅ Правильная конфигурация для всех ваших фавиконок
   icons: {
     icon: [
       { url: '/favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -66,7 +72,7 @@ export const metadata: Metadata = {
       { url: '/favicons/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
       { url: '/favicons/favicon-256x256.png', sizes: '256x256', type: 'image/png' },
       { url: '/favicons/favicon-512x512.png', sizes: '512x512', type: 'image/png' },
-      { url: '/favicons/favicon.svg', type: 'image/svg+xml' }, // SVG для современных браузеров
+      { url: '/favicons/favicon.svg', type: 'image/svg+xml' },
     ],
     apple: [
       { url: '/favicons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
@@ -80,8 +86,7 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/manifest.json',
-  themeColor: '#3b82f6',
-  viewport: 'width=device-width, initial-scale=1',
+  // ❌ Удалены themeColor и viewport отсюда
   other: {
     'yandex-verification': '780e281315a6c67b',
   },

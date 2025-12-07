@@ -4,13 +4,12 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { 
-  ShoppingCart, 
-  Heart, 
-  ChevronRight, 
-  Minus, 
+import {
+  ShoppingCart,
+  Heart,
+  ChevronRight,
+  Minus,
   Plus,
-  Share2,
   Truck,
   Shield,
   TimerIcon

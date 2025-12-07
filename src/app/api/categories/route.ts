@@ -1,10 +1,21 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+interface CategoryWithCount {
+  id: string;
+  name: string;
+  slug: string | null;
+  parentId: string | null;
+  description: string | null;
+  _count: {
+    products: number;
+  };
+}
+
 export async function GET() {
   try {
     // Получаем все категории с подсчетом товаров
-    const categories = await prisma.category.findMany({
+    const categories: CategoryWithCount[] = await prisma.category.findMany({
       orderBy: {
         name: 'asc',
       },
@@ -18,7 +29,7 @@ export async function GET() {
     });
 
     // Возвращаем категории с подсчетом товаров
-    const categoriesWithCount = categories.map(cat => ({
+    const categoriesWithCount = categories.map((cat) => ({
       id: cat.id,
       name: cat.name,
       slug: cat.slug,
