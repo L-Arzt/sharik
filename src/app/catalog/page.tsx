@@ -598,6 +598,29 @@ function CatalogContent() {
     loadProducts();
   }, [currentCategory, searchQuery, currentPage, currentSort, currentOrder, searchParams]);
 
+  // Прокрутка вверх при смене страницы
+  useEffect(() => {
+    // Небольшая задержка для корректной работы на мобильных устройствах
+    const timer = setTimeout(() => {
+      // Прокручиваем к элементу с id="catalog-top" или к началу страницы
+      const catalogTop = document.getElementById('catalog-top');
+      if (catalogTop) {
+        catalogTop.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      } else {
+        // Fallback на обычную прокрутку
+        window.scrollTo({ 
+          top: 0, 
+          behavior: 'smooth' 
+        });
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [currentPage]);
+
 
   const updateUrl = useCallback((params: Record<string, string | null>) => {
     const newParams = new URLSearchParams(searchParams.toString());
@@ -666,7 +689,7 @@ function CatalogContent() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-8">
+    <div className="min-h-screen bg-gray-50 pt-24 pb-8" id="catalog-top">
       <div className="container mx-auto px-4">
         
         <div className="mb-8">

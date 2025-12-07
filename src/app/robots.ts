@@ -4,8 +4,8 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
-      allow: '/',
-      disallow: ['/api/', '/_next/', '/admin/'],
+      allow: ['/', '/_next/static/'], // разрешаем статику
+      disallow: ['/api/', '/_next/data/', '/admin/', '/cart/', '/checkout/'],
     },
     sitemap: 'https://xn--80atjc1ay.xn--p1ai/sitemap.xml',
     host: 'https://xn--80atjc1ay.xn--p1ai',

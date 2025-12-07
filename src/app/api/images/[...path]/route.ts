@@ -7,13 +7,13 @@ export async function GET(
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    const { path: pathArray } = await params;  // ИСПРАВЛЕНО
+    const { path: pathArray } = await params; 
     const imagePath = pathArray.join('/');
     
-    // Путь к изображениям (на уровень выше проекта sharik)
-    const fullPath = path.join(process.cwd(), '..', 'parsing_shar', 'downloaded_images', imagePath);
+  
+    const fullPath = path.join(process.cwd(), '..', 'downloaded_images', imagePath);
 
-    // Проверяем, что файл существует и находится в разрешенной директории
+
     if (!fs.existsSync(fullPath)) {
       return NextResponse.json(
         { error: 'Image not found' },
@@ -21,9 +21,9 @@ export async function GET(
       );
     }
 
-    // Проверяем, что путь не выходит за пределы разрешенной директории
+
     const resolvedPath = path.resolve(fullPath);
-    const allowedPath = path.resolve(path.join(process.cwd(), '..', 'parsing_shar', 'downloaded_images'));
+    const allowedPath = path.resolve(path.join(process.cwd(), '..', 'downloaded_images'));
     
     if (!resolvedPath.startsWith(allowedPath)) {
       return NextResponse.json(

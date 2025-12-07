@@ -79,6 +79,11 @@ const Testimonials = () => {
                 <Quote className="w-8 h-8 text-purple-300" />
               </div>
 
+              {/* Item Reviewed */}
+              <div itemProp="itemReviewed" itemScope itemType="https://schema.org/LocalBusiness" className="hidden">
+                <meta itemProp="name" content="ШарикиРостов.рф" />
+              </div>
+
               {/* Rating */}
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -91,9 +96,11 @@ const Testimonials = () => {
                     }`}
                   />
                 ))}
-                <meta itemProp="reviewRating" itemScope itemType="https://schema.org/Rating" />
-                <meta itemProp="ratingValue" content={testimonial.rating.toString()} />
-                <meta itemProp="bestRating" content="5" />
+                <div itemProp="reviewRating" itemScope itemType="https://schema.org/Rating" className="hidden">
+                  <meta itemProp="ratingValue" content={testimonial.rating.toString()} />
+                  <meta itemProp="bestRating" content="5" />
+                  <meta itemProp="worstRating" content="1" />
+                </div>
               </div>
 
               {/* Content */}

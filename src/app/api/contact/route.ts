@@ -8,7 +8,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, phone, email, eventType, eventDate, eventTime, message } = body;
 
-    // Формируем сообщение для Telegram
     const telegramMessage = `
 🎈 *Новая заявка с сайта ШарикиРостов.рф*
 
@@ -24,7 +23,6 @@ export async function POST(request: NextRequest) {
 🌐 *Источник:* https://шарикиростов.рф
     `;
 
-    // Отправляем сообщение в Telegram
     const telegramResponse = await fetch(
       `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
       {

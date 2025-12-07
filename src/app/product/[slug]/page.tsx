@@ -323,9 +323,6 @@ export default function ProductPage() {
                   <ShoppingCart size={24} />
                   {isInCart ? 'Добавлено в корзину' : 'В корзину'}
                 </button>
-                <button className="p-4 border-2 border-gray-200 rounded-xl hover:border-blue-600 hover:text-blue-600 transition-all">
-                  <Share2 size={24} />
-                </button>
               </div>
 
               {/* Постоянное уведомление если товар в корзине */}

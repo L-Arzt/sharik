@@ -11,43 +11,37 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону и Аксае | Заказать шары',
+    default: 'Воздушные шары Ростов и Аксай 🎈 Доставка | ШарикиРостов.рф',
     template: '%s | ШарикиРостов.рф'
   },
-  description: 'Воздушные шары в Ростове-на-Дону и Аксае! Шарики для дня рождения, свадьбы, корпоративов. Качественные шары по доступным ценам. Доставка по городу 24/7. Самовывоз в центре.',
-  keywords: 'воздушные шары ростов, шарики ростов на дону, купить шары ростов, день рождения ростов, свадьба ростов, корпоратив ростов, доставка шаров ростов, заказать шары ростов',
+  description: 'Воздушные шары в Ростове и Аксае 🎈 День рождения, свадьба, корпоратив. Доставка от 4000₽ бесплатно. Заказ 24/7 ☎️ +7 (995) 135-13-23',
   authors: [{ name: 'ШарикиРостов.рф' }],
   creator: 'ШарикиРостов.рф',
   publisher: 'ШарикиРостов.рф',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL('https://шарикиростов.рф'),
+  metadataBase: new URL('https://xn--80atjc1ay.xn--p1ai'), 
   alternates: {
-    canonical: 'https://шарикиростов.рф',
+    canonical: '/',
   },
   openGraph: {
-    title: 'ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону и Аксае',
-    description: 'Воздушные шары в Ростове-на-Дону и Аксае! Шарики для дня рождения, свадьбы, корпоративов. Качественные шары по доступным ценам. Доставка по городу 24/7.',
+    title: 'Воздушные шары в Ростове-на-Дону и Аксае 🎈 ШарикиРостов.рф',
+    description: '🎉 День рождения, свадьба, корпоратив. Бесплатная доставка от 4000₽. Заказ 24/7',
     type: 'website',
     locale: 'ru_RU',
-    url: 'https://шарикиростов.рф',
+    url: '/',
     siteName: 'ШарикиРостов.рф',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Воздушные шары в Ростове-на-Дону и Аксае - Качественные шары для любого праздника',
+        alt: 'Воздушные шары - яркое оформление праздников',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ШарикиРостов.рф - Воздушные шары в Ростове-на-Дону и Аксае',
-    description: 'Воздушные шары в Ростове-на-Дону и Аксае! Шарики для дня рождения, свадьбы, корпоративов.',
+    title: 'Воздушные шары Ростов 🎈 Доставка от 4000₽',
+    description: 'День рождения, свадьба, корпоратив. Заказ 24/7',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -61,17 +55,36 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  category: 'shopping',
-  classification: 'Воздушные шары и праздничное оформление',
+  // ✅ Правильная конфигурация для всех ваших фавиконок
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicons/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/favicons/favicon-64x64.png', sizes: '64x64', type: 'image/png' },
+      { url: '/favicons/favicon-128x128.png', sizes: '128x128', type: 'image/png' },
+      { url: '/favicons/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicons/favicon-256x256.png', sizes: '256x256', type: 'image/png' },
+      { url: '/favicons/favicon-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicons/favicon.svg', type: 'image/svg+xml' }, // SVG для современных браузеров
+    ],
+    apple: [
+      { url: '/favicons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicons/favicon.ico',
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/favicons/favicon.svg',
+      },
     ],
   },
   manifest: '/manifest.json',
+  themeColor: '#3b82f6',
+  viewport: 'width=device-width, initial-scale=1',
   other: {
-	  'yandex-verification': '780e281315a6c67b',
-}
+    'yandex-verification': '780e281315a6c67b',
+  },
 }
 
 export default function RootLayout({
@@ -81,67 +94,16 @@ export default function RootLayout({
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "Organization",
     "name": "ШарикиРостов.рф",
-    "description": "Воздушные шары в Ростове-на-Дону и Аксае! Шарики для дня рождения, свадьбы, корпоративов. Качественные шары по доступным ценам. Доставка по городу 24/7.",
-    "url": "https://шарикиростов.рф",
-    "telephone": "+7 (995) 135-13-23",
-    "email": "sharikirostov61@mail.ru",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Ростов-на-Дону",
-      "addressRegion": "Ростовская область",
-      "addressCountry": "RU"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "47.2357",
-      "longitude": "39.7015"
-    },
-    "openingHours": [
-      "Mo-Fr 09:00-20:00",
-      "Sa-Su 10:00-18:00"
-    ],
-    "priceRange": "₽₽",
-    "currenciesAccepted": "RUB",
-    "paymentAccepted": "Cash, Credit Card",
-    "areaServed": {
-      "@type": "City",
-      "name": "Ростов-на-Дону"
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Воздушные шары",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Product",
-            "name": "Воздушные шары для дня рождения"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Product",
-            "name": "Воздушные шары для свадьбы"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Product",
-            "name": "Воздушные шары для корпоративов"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Product",
-            "name": "Воздушные шары для гендер-пати"
-          }
-        }
-      ]
+    "url": "https://xn--80atjc1ay.xn--p1ai",
+    "logo": "https://xn--80atjc1ay.xn--p1ai/og-image.jpg",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+7-995-135-13-23",
+      "contactType": "Customer Service",
+      "areaServed": "RU",
+      "availableLanguage": "Russian"
     },
     "sameAs": [
       "https://t.me/cloudless_sky",
@@ -153,11 +115,6 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#3b82f6" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -165,7 +122,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <Header />
-        <main>{children}</main>
+        {children}
         <Footer />
       </body>
     </html>

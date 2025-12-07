@@ -171,9 +171,9 @@ const ContactSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="bg-white rounded-2xl p-8 shadow-xl border border-blue-100"
+            className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl border border-blue-100"
           >
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">
               Оставить заявку
             </h2>
 
@@ -330,56 +330,56 @@ const ContactSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="space-y-8 flex flex-col items-center justify-between my-5"
+            className="space-y-6 sm:space-y-8 flex flex-col items-center justify-between my-5 w-full"
           >
-            <div className=''>
-              <h2 className=" text-2xl font-bold text-gray-800 mb-6 px-6">
+            <div className='w-full'>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 px-4 sm:px-6">
                 Контактная информация
               </h2>
 
 
-              <div className="flex items-start gap-4 flex-col">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-6 h-6 text-white" />
+              <div className="flex items-start gap-3 sm:gap-4 flex-col w-full px-4 sm:px-6">
+                <div className="flex items-start gap-3 sm:gap-4 w-full">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Телефон</h3>
-                    <p className="text-gray-600">+7 (995) 135-13-23</p>
-                  </div>
-                </div>
-
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
-                    <p className="text-gray-600">sharikirostov61@mail.ru</p>
+                  <div className="min-w-0 flex-grow">
+                    <h3 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Телефон</h3>
+                    <p className="text-gray-600 text-sm sm:text-base break-words">+7 (995) 135-13-23</p>
                   </div>
                 </div>
 
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-white" />
+                <div className="flex items-start gap-3 sm:gap-4 w-full">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Адрес</h3>
-                    <p className="text-gray-600">г. Ростов-на-Дону</p>
+                  <div className="min-w-0 flex-grow">
+                    <h3 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Email</h3>
+                    <p className="text-gray-600 text-sm sm:text-base break-all">sharikirostov61@mail.ru</p>
                   </div>
                 </div>
 
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-6 h-6 text-white" />
+                <div className="flex items-start gap-3 sm:gap-4 w-full">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Режим работы</h3>
-                    <p className="text-gray-600">Пн-Пт: 9:00 - 20:00</p>
-                    <p className="text-gray-600">Сб-Вс: 10:00 - 18:00</p>
+                  <div className="min-w-0 flex-grow">
+                    <h3 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Адрес</h3>
+                    <p className="text-gray-600 text-sm sm:text-base break-words">г. Ростов-на-Дону</p>
+                  </div>
+                </div>
+
+
+                <div className="flex items-start gap-3 sm:gap-4 w-full">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                  <div className="min-w-0 flex-grow">
+                    <h3 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Режим работы</h3>
+                    <p className="text-gray-600 text-sm sm:text-base">Пн-Пт: 9:00 - 20:00</p>
+                    <p className="text-gray-600 text-sm sm:text-base">Сб-Вс: 10:00 - 18:00</p>
                   </div>
                 </div>
               </div>
@@ -387,9 +387,9 @@ const ContactSection = () => {
 
 
             {/* Social Links */}
-            <div>
-              <h3 className="font-semibold text-gray-800 mb-4">Мы в социальных сетях</h3>
-              <div className="flex flex-wrap gap-3">
+            <div className="w-full px-4 sm:px-6">
+              <h3 className="font-semibold text-gray-800 mb-4 text-sm sm:text-base">Мы в социальных сетях</h3>
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}

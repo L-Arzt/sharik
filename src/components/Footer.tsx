@@ -70,12 +70,12 @@ const Footer = () => {
             <h4 className="text-lg font-semibold">Быстрые ссылки</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#main-section" className="text-gray-300 hover:text-white transition-colors">
+                <a href="/" className="text-gray-300 hover:text-white transition-colors">
                   Главная
                 </a>
               </li>
               <li>
-                <a href="#about-section" className="text-gray-300 hover:text-white transition-colors">
+                <a href="#categories" className="text-gray-300 hover:text-white transition-colors">
                   Категории
                 </a>
               </li>
@@ -108,7 +108,7 @@ const Footer = () => {
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-purple-400 mt-0.5" />
                 <div>
-                  <p className="text-gray-300">г. Ростов-на-Дону</p>
+                  <p className="text-gray-300">Ростов-на-Дону | Аксай</p>
                 </div>
               </div>
 

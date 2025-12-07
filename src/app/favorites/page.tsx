@@ -32,10 +32,10 @@ export default function FavoritesPage() {
       <div className="container mx-auto px-4">
         
         {/* Хлебные крошки */}
-        <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
-          <Link href="/" className="hover:text-blue-600">Главная</Link>
-          <ChevronRight size={16} />
-          <span className="text-gray-900">Избранное</span>
+        <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mb-6 sm:mb-8 overflow-x-auto pb-2">
+          <Link href="/" className="hover:text-blue-600 whitespace-nowrap">Главная</Link>
+          <ChevronRight size={14} className="sm:w-4 sm:h-4 flex-shrink-0" />
+          <span className="text-gray-900 whitespace-nowrap">Избранное</span>
         </div>
 
         <h1 className="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
@@ -61,13 +61,20 @@ export default function FavoritesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {favorites.map((item) => (
               <div key={item.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all overflow-hidden border border-gray-100 group flex flex-col">
-                <Link href={`/product/${item.slug}`} className="relative h-64 overflow-hidden bg-gray-50">
+                <Link href={`/product/${item.slug}`} className="relative h-64 w-full overflow-hidden bg-gray-50">
                   <Image
                     src={item.image}
                     alt={item.name}
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
+                    priority={false}
+                    onError={(e) => { 
+                      const target = e.target as HTMLImageElement;
+                      if (target.src !== '/images/pic1.jpg') {
+                        target.src = '/images/pic1.jpg';
+                      }
+                    }}
                   />
                   <button
                     onClick={(e) => {

@@ -68,6 +68,23 @@ const FAQ = () => {
             itemType="https://schema.org/FAQPage"
             className="space-y-4"
           >
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  "mainEntity": faqs.map(faq => ({
+                    "@type": "Question",
+                    "name": faq.question,
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": faq.answer
+                    }
+                  }))
+                })
+              }}
+            />
             {faqs.map((faq, index) => (
               <motion.div
                 key={faq.id}
@@ -81,19 +98,19 @@ const FAQ = () => {
               >
                 <button
                   onClick={() => toggleFAQ(faq.id)}
-                  className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors gap-3"
                 >
                   <h3 
-                    className="text-lg font-semibold text-gray-800 pr-4"
+                    className="text-base sm:text-lg font-semibold text-gray-800 pr-2 sm:pr-4 break-words flex-grow"
                     itemProp="name"
                   >
                     {faq.question}
                   </h3>
                   <div className="flex-shrink-0">
                     {openId === faq.id ? (
-                      <ChevronUp className="w-6 h-6 text-purple-600" />
+                      <ChevronUp className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                     ) : (
-                      <ChevronDown className="w-6 h-6 text-gray-400" />
+                      <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
                     )}
                   </div>
                 </button>
@@ -108,7 +125,7 @@ const FAQ = () => {
                       className="overflow-hidden"
                     >
                       <div 
-                        className="px-8 pb-6 text-gray-600 leading-relaxed"
+                        className="px-4 sm:px-6 lg:px-8 pb-4 sm:pb-5 lg:pb-6 text-sm sm:text-base text-gray-600 leading-relaxed break-words"
                         itemScope
                         itemType="https://schema.org/Answer"
                       >

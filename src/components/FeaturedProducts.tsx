@@ -145,6 +145,29 @@ const FeaturedProducts = () => {
                   </span>
                 </div>
 
+                {/* Aggregate Rating */}
+                <div itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating" className="hidden">
+                  <meta itemProp="ratingValue" content={product.rating.toString()} />
+                  <meta itemProp="reviewCount" content={product.reviews.toString()} />
+                  <meta itemProp="bestRating" content="5" />
+                  <meta itemProp="worstRating" content="1" />
+                </div>
+
+                {/* Review */}
+                <div itemProp="review" itemScope itemType="https://schema.org/Review" className="hidden">
+                  <div itemProp="itemReviewed" itemScope itemType="https://schema.org/Product">
+                    <meta itemProp="name" content={product.name} />
+                  </div>
+                  <div itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                    <meta itemProp="ratingValue" content={product.rating.toString()} />
+                    <meta itemProp="bestRating" content="5" />
+                    <meta itemProp="worstRating" content="1" />
+                  </div>
+                  <div itemProp="author" itemScope itemType="https://schema.org/Person">
+                    <meta itemProp="name" content="Клиент" />
+                  </div>
+                </div>
+
                 {/* Price */}
                 <div className="flex items-center justify-between">
                   <div>
@@ -157,6 +180,7 @@ const FeaturedProducts = () => {
                       <meta itemProp="priceCurrency" content="RUB" />
                       <meta itemProp="price" content={product.price.toString()} />
                       <meta itemProp="availability" content={product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"} />
+                      <meta itemProp="priceValidUntil" content={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} />
                       {product.price.toLocaleString()} ₽
                     </span>
                     <span className="text-gray-400 line-through ml-2">
