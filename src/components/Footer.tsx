@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, Heart, Star, Truck, Shield, Instagram } from 'lucide-react';
+import Link from 'next/link'; // ✅ Добавьте импорт
 
 const Footer = () => {
   return (
@@ -70,11 +71,13 @@ const Footer = () => {
             <h4 className="text-lg font-semibold">Быстрые ссылки</h4>
             <ul className="space-y-2">
               <li>
-                <a href="/" className="text-gray-300 hover:text-white transition-colors">
+                {/* ✅ Используем Link для внутренней страницы */}
+                <Link href="/" className="text-gray-300 hover:text-white transition-colors">
                   Главная
-                </a>
+                </Link>
               </li>
               <li>
+                {/* ✅ Для якорных ссылок (#) оставляем <a> */}
                 <a href="#categories" className="text-gray-300 hover:text-white transition-colors">
                   Категории
                 </a>
@@ -165,28 +168,9 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
-        {/* Bottom */}
-        {/* <div className="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-400 text-sm">
-            © {currentYear} ШарикиРостов.рф. Все права защищены.
-          </p>
-
-          <div className="flex space-x-6 text-sm flex-wrap">
-            <a href="/privacy" className="text-gray-400 hover:text-white transition-colors">
-              Политика конфиденциальности
-            </a>
-            <a href="/terms" className="text-gray-400 hover:text-white transition-colors">
-              Условия использования
-            </a>
-            <a href="/sitemap.xml" className="text-gray-400 hover:text-white transition-colors">
-              Карта сайта
-            </a>
-          </div>
-        </div> */}
       </div>
     </footer>
   );
 };
 
-export default Footer; 
+export default Footer;
