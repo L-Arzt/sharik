@@ -1,5 +1,7 @@
-import type { Metadata, Viewport } from 'next' // ✅ Добавьте импорт Viewport
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
+import Script from 'next/script' // Можно использовать Script для метрики
+import Image from 'next/image'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -9,7 +11,6 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-// ✅ Отдельный экспорт viewport
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -86,7 +87,6 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/manifest.json',
-  // ❌ Удалены themeColor и viewport отсюда
   other: {
     'yandex-verification': '780e281315a6c67b',
   },
@@ -120,12 +120,45 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
+        {/* Schema.org JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        
+        {/* Yandex.Metrika counter */}
+        <Script id="yandex-metrika" strategy="afterInteractive">
+          {`
+            (function(m,e,t,r,i,k,a){
+                m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                m[i].l=1*new Date();
+                for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+                k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+            })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106052852', 'ym');
+
+            ym(106052852, 'init', {
+                ssr: true,
+                webvisor: true,
+                clickmap: true,
+                ecommerce: "dataLayer",
+                accurateTrackBounce: true,
+                trackLinks: true
+            });
+          `}
+        </Script>
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
+        {/* Yandex.Metrika NoScript (в теле, чтобы не ругался Next.js на head) */}
+        <noscript>
+          <div>
+              <img 
+      src="https://mc.yandex.ru/watch/106052852" 
+      style={{ position: 'absolute', left: '-9999px' }} 
+      alt="" 
+    />
+          </div>
+        </noscript>
+
         <Header />
         {children}
         <Footer />

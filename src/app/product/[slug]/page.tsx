@@ -103,7 +103,12 @@ export default function ProductPage() {
 
   const getImageUrl = (image: ProductImage): string => {
     if (image.relativePath) {
-      return `/api/images/${encodeURIComponent(image.relativePath.replace(/\\/g, '/'))}`;
+      // Нормализуем путь (заменяем обратные слеши на прямые)
+      const normalizedPath = image.relativePath.replace(/\\/g, '/');
+      // Разбиваем на сегменты и кодируем каждый отдельно
+      const segments = normalizedPath.split('/').filter(s => s.length > 0);
+      const encodedPath = segments.map(segment => encodeURIComponent(segment)).join('/');
+      return `/api/images/${encodedPath}`;
     }
     return '/images/pic1.jpg';
   };

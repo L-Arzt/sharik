@@ -81,7 +81,12 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
     if (product.images && product.images.length > 0) {
       const img = product.images[0];
       if (img.relativePath) {
-        return `/api/images/${encodeURIComponent(img.relativePath.replace(/\\/g, '/'))}`;
+        // Нормализуем путь (заменяем обратные слеши на прямые)
+        const normalizedPath = img.relativePath.replace(/\\/g, '/');
+        // Разбиваем на сегменты и кодируем каждый отдельно
+        const segments = normalizedPath.split('/').filter(s => s.length > 0);
+        const encodedPath = segments.map(segment => encodeURIComponent(segment)).join('/');
+        return `/api/images/${encodedPath}`;
       }
     }
     return '/images/pic1.jpg';
@@ -598,29 +603,6 @@ function CatalogContent() {
     loadProducts();
   }, [currentCategory, searchQuery, currentPage, currentSort, currentOrder, searchParams]);
 
-  // Прокрутка вверх при смене страницы
-  useEffect(() => {
-    // Небольшая задержка для корректной работы на мобильных устройствах
-    const timer = setTimeout(() => {
-      // Прокручиваем к элементу с id="catalog-top" или к началу страницы
-      const catalogTop = document.getElementById('catalog-top');
-      if (catalogTop) {
-        catalogTop.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
-        });
-      } else {
-        // Fallback на обычную прокрутку
-        window.scrollTo({ 
-          top: 0, 
-          behavior: 'smooth' 
-        });
-      }
-    }, 150);
-
-    return () => clearTimeout(timer);
-  }, [currentPage]);
-
 
   const updateUrl = useCallback((params: Record<string, string | null>) => {
     const newParams = new URLSearchParams(searchParams.toString());
@@ -689,7 +671,7 @@ function CatalogContent() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-8" id="catalog-top">
+    <div className="min-h-screen bg-gray-50 pt-24 pb-8">
       <div className="container mx-auto px-4">
         
         <div className="mb-8">

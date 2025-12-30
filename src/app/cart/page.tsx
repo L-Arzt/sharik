@@ -223,10 +223,10 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
       <div className="container mx-auto px-4">
         
-        <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 mb-6 sm:mb-8 overflow-x-auto pb-2">
-          <Link href="/" className="hover:text-blue-600 whitespace-nowrap">Главная</Link>
-          <ChevronRight size={14} className="sm:w-4 sm:h-4 flex-shrink-0" />
-          <span className="text-gray-900 whitespace-nowrap">Корзина</span>
+        <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
+          <Link href="/" className="hover:text-blue-600">Главная</Link>
+          <ChevronRight size={16} />
+          <span className="text-gray-900">Корзина</span>
         </div>
 
 
@@ -247,35 +247,35 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
 
         {/* Уведомление об активном заказе */}
         {activeOrder && (
-          <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4 sm:p-6 mb-8 mx-auto max-w-full overflow-hidden">
-            <div className="flex items-start gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="text-white" size={20} />
+          <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 mb-8">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="text-white" size={24} />
               </div>
-              <div className="flex-grow min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold text-green-900 mb-2 break-words">
+              <div className="flex-grow">
+                <h3 className="text-xl font-bold text-green-900 mb-2">
                   Ваш заказ оформлен!
                 </h3>
-                <p className="text-green-800 mb-1 text-sm sm:text-base break-words">
-                  <strong>Номер заказа:</strong> <span className="break-all">{activeOrder.orderId}</span>
+                <p className="text-green-800 mb-1">
+                  <strong>Номер заказа:</strong> {activeOrder.orderId}
                 </p>
-                <p className="text-green-800 mb-1 text-sm sm:text-base break-words">
-                  <strong>Дата оформления:</strong> <span className="break-all">{activeOrder.orderDate}</span>
+                <p className="text-green-800 mb-1">
+                  <strong>Дата оформления:</strong> {activeOrder.orderDate}
                 </p>
-                <p className="text-green-700 text-xs sm:text-sm mb-4 break-words">
-                  Мы свяжемся с вами по телефону <span className="break-all">{activeOrder.customer.phone}</span> для подтверждения заказа.
+                <p className="text-green-700 text-sm mb-4">
+                  Мы свяжемся с вами по телефону {activeOrder.customer.phone} для подтверждения заказа.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <div className="flex gap-3">
                   <button
                     onClick={handleCancelOrder}
-                    className="px-4 sm:px-6 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+                    className="px-6 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all flex items-center gap-2"
                   >
                     <X size={18} />
-                    <span>Отменить заказ</span>
+                    Отменить заказ
                   </button>
                   <Link
                     href="/catalog"
-                    className="px-4 sm:px-6 py-2 bg-white border-2 border-green-500 text-green-700 rounded-lg font-medium hover:bg-green-50 transition-all text-center text-sm sm:text-base"
+                    className="px-6 py-2 bg-white border-2 border-green-500 text-green-700 rounded-lg font-medium hover:bg-green-50 transition-all"
                   >
                     Продолжить покупки
                   </Link>
@@ -312,15 +312,8 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     src={item.image}
                     alt={item.name}
                     fill
-                    sizes="(max-width: 640px) 96px, 128px"
                     className="object-cover"
-                    priority={false}
-                    onError={(e) => { 
-                      const target = e.target as HTMLImageElement;
-                      if (target.src !== '/images/pic1.jpg') {
-                        target.src = '/images/pic1.jpg';
-                      }
-                    }}
+                    onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
                     />
                 </Link>
 
@@ -486,10 +479,10 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
 
       {/* Модальное окно формы заказа */}
       {showOrderForm && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-1 sm:p-4 overflow-hidden">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto overflow-x-hidden mx-1 sm:mx-4">
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-3 sm:p-6 flex items-center justify-between gap-2">
-              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 break-words flex-1 min-w-0">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">
                 {orderSuccess ? 'Заказ оформлен!' : 'Оформление заказа'}
               </h2>
               <button
@@ -534,9 +527,9 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
               </div>
             ) : (
               // Форма заказа
-              <form onSubmit={handleSubmitOrder} className="p-3 sm:p-6 space-y-3 sm:space-y-6 overflow-x-hidden">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="min-w-0 w-full">
+              <form onSubmit={handleSubmitOrder} className="p-6 space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Имя *
                     </label>
@@ -546,13 +539,13 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full max-w-full box-border px-2 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Ваше имя"
                     />
                   </div>
 
 
-                  <div className="min-w-0 w-full">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Телефон *
                     </label>
@@ -562,14 +555,14 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
-                      className="w-full max-w-full box-border px-2 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="+7 (999) 123-45-67"
                     />
                   </div>
                 </div>
 
 
-                <div className="min-w-0 w-full">
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Как с вами связаться? *
                   </label>
@@ -578,7 +571,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     value={formData.contactMethod}
                     onChange={handleInputChange}
                     required
-                    className="w-full max-w-full box-border px-2 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="telegram">Telegram</option>
                     <option value="whatsapp">WhatsApp</option>
@@ -587,8 +580,8 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                 </div>
 
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="min-w-0 w-full overflow-hidden">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Дата доставки *
                     </label>
@@ -599,12 +592,12 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                       onChange={handleInputChange}
                       required
                       min={new Date().toISOString().split('T')[0]}
-                      className="w-full box-border px-1.5 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base mobile-date-input"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
 
 
-                  <div className="min-w-0 w-full overflow-hidden">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Время доставки *
                     </label>
@@ -614,13 +607,13 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                       value={formData.deliveryTime}
                       onChange={handleInputChange}
                       required
-                      className="w-full box-border px-1.5 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base mobile-time-input"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                 </div>
 
 
-                <div className="min-w-0 w-full">
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Адрес доставки *
                   </label>
@@ -630,13 +623,13 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     value={formData.address}
                     onChange={handleInputChange}
                     required
-                    className="w-full max-w-full box-border px-2 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Улица, дом, квартира"
                   />
                 </div>
 
 
-                <div className="min-w-0 w-full">
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Комментарий к заказу
                   </label>
@@ -645,7 +638,7 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                     value={formData.comment}
                     onChange={handleInputChange}
                     rows={3}
-                    className="w-full max-w-full box-border px-2 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm sm:text-base"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                     placeholder="Дополнительные пожелания..."
                   />
                 </div>

@@ -1,56 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as fs from 'fs';
-import * as path from 'path';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export async function GET(
-  request: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    const { path: pathArray } = await params; 
-    const imagePath = pathArray.join('/');
-    
-  
-    const fullPath = path.join(process.cwd(), '..', 'downloaded_images', imagePath);
+    // 1. Дожидаемся параметров (важно для Next.js 15)
+    const { path: imagePath } = await params;
 
+    // 2. ИСПРАВЛЕНИЕ: Ищем файл внутри папки 'public', а не в корне проекта
+    const fullPath = path.join(process.cwd(), '../downloaded_images', ...imagePath);
 
-    if (!fs.existsSync(fullPath)) {
-      return NextResponse.json(
-        { error: 'Image not found' },
-        { status: 404 }
-      );
+    // 3. Проверяем существование файла
+    try {
+      await fs.access(fullPath);
+    } catch {
+      console.error(`File not found: ${fullPath}`); // Логируем ошибку для отладки
+      return NextResponse.json({ error: 'Image not found' }, { status: 404 });
     }
 
+    // 4. Читаем файл
+    const imageBuffer = await fs.readFile(fullPath);
 
-    const resolvedPath = path.resolve(fullPath);
-    const allowedPath = path.resolve(path.join(process.cwd(), '..', 'downloaded_images'));
-    
-    if (!resolvedPath.startsWith(allowedPath)) {
-      return NextResponse.json(
-        { error: 'Access denied' },
-        { status: 403 }
-      );
-    }
-
-    const fileBuffer = fs.readFileSync(fullPath);
+    // 5. Определяем тип контента
     const ext = path.extname(fullPath).toLowerCase();
-    
-    let contentType = 'image/jpeg';
-    if (ext === '.png') contentType = 'image/png';
-    if (ext === '.gif') contentType = 'image/gif';
-    if (ext === '.webp') contentType = 'image/webp';
+    const contentType = {
+      '.jpg': 'image/jpeg',
+      '.jpeg': 'image/jpeg',
+      '.png': 'image/png',
+      '.gif': 'image/gif',
+      '.webp': 'image/webp',
+      '.svg': 'image/svg+xml',
+    }[ext] || 'application/octet-stream';
 
-    return new NextResponse(fileBuffer, {
+    // 6. Отдаем файл как ответ
+    return new NextResponse(imageBuffer, {
       headers: {
         'Content-Type': contentType,
         'Cache-Control': 'public, max-age=31536000, immutable',
       },
     });
   } catch (error) {
-    console.error('Error serving image:', error);
-    return NextResponse.json(
-      { error: 'Failed to serve image' },
-      { status: 500 }
-    );
+    console.error('API Image Error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
