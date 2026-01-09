@@ -95,7 +95,7 @@ const FeaturedProducts = () => {
               <div className="relative h-48 sm:h-56 lg:h-64 bg-gradient-to-br from-primary-100 to-secondary-100 overflow-hidden">
                 <Image
                   src={product.image}
-                  alt={product.name}
+                  alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае с доставкой`}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

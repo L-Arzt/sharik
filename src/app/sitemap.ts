@@ -60,6 +60,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: product.updatedAt || new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
+      alternates: {
+        languages: {
+          'ru-RU': `${baseUrl}/product/${product.slug}`,
+        },
+      },
     }))
     
     // Динамические страницы категорий
@@ -67,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/catalog?category=${category.slug}`,
       lastModified: category.updatedAt || new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.7,
+      priority: 0.8,
     }))
     
     return [...staticPages, ...productPages, ...categoryPages]

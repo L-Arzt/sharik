@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://xn--80atjc1ay.xn--p1ai/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /admin/
+
+# Allow important pages
+Allow: /
+Allow: /catalog
+Allow: /product/
+Allow: /cart
+Allow: /favorites
+

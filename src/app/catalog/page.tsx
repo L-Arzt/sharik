@@ -165,8 +165,9 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
           <div className="relative w-48 h-48 flex-shrink-0 overflow-hidden">
             <Image
               src={imageUrl}
-              alt={product.name}
+              alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае с доставкой. Цена ${product.price}`}
               fill
+              loading="lazy"
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
             />
@@ -243,9 +244,10 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
         <div className="relative h-64 overflow-hidden bg-gray-50">
           <Image
             src={imageUrl}
-            alt={product.name}
+            alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае с доставкой. Цена ${product.price}`}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
             onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
           />
           <button 
@@ -675,12 +677,22 @@ function CatalogContent() {
       <div className="container mx-auto px-4">
         
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Каталог шаров</h1>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-blue-600">Главная</Link>
-            <ChevronRight size={16} />
-            <span className="text-gray-900">Каталог</span>
-          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Каталог воздушных шаров</h1>
+          <nav aria-label="Хлебные крошки" itemScope itemType="https://schema.org/BreadcrumbList">
+            <ol className="flex items-center gap-2 text-sm text-gray-500">
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <Link href="/" className="hover:text-blue-600" itemProp="item">
+                  <span itemProp="name">Главная</span>
+                </Link>
+                <meta itemProp="position" content="1" />
+              </li>
+              <ChevronRight size={16} />
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <span className="text-gray-900" itemProp="name">Каталог</span>
+                <meta itemProp="position" content="2" />
+              </li>
+            </ol>
+          </nav>
         </div>
 
 

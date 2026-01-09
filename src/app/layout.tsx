@@ -1,14 +1,22 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Nunito, Comfortaa } from 'next/font/google'
 import Script from 'next/script' // Можно использовать Script для метрики
-import Image from 'next/image'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-const inter = Inter({ 
+const nunito = Nunito({ 
   subsets: ['latin', 'cyrillic'],
-  variable: '--font-inter',
+  variable: '--font-nunito',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+})
+
+const comfortaa = Comfortaa({ 
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-comfortaa',
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
 })
 
 export const viewport: Viewport = {
@@ -28,21 +36,24 @@ export const metadata: Metadata = {
   publisher: 'ШарикиРостов.рф',
   metadataBase: new URL('https://xn--80atjc1ay.xn--p1ai'), 
   alternates: {
-    canonical: '/',
+    canonical: 'https://xn--80atjc1ay.xn--p1ai/',
+    languages: {
+      'ru-RU': 'https://xn--80atjc1ay.xn--p1ai/',
+    },
   },
   openGraph: {
     title: 'Воздушные шары в Ростове-на-Дону и Аксае 🎈 ШарикиРостов.рф',
     description: '🎉 День рождения, свадьба, корпоратив. Бесплатная доставка от 4000₽. Заказ 24/7',
     type: 'website',
     locale: 'ru_RU',
-    url: '/',
+    url: 'https://xn--80atjc1ay.xn--p1ai/',
     siteName: 'ШарикиРостов.рф',
     images: [
       {
-        url: '/og-image.jpg',
+        url: 'https://xn--80atjc1ay.xn--p1ai/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Воздушные шары - яркое оформление праздников',
+        alt: 'Воздушные шары - яркое оформление праздников в Ростове-на-Дону и Аксае',
       },
     ],
   },
@@ -120,6 +131,11 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
+        {/* Preconnect для оптимизации загрузки */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://mc.yandex.ru" />
+        
         {/* Schema.org JSON-LD */}
         <script
           type="application/ld+json"
@@ -147,7 +163,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${nunito.variable} ${comfortaa.variable} font-sans antialiased`}>
         {/* Yandex.Metrika NoScript (в теле, чтобы не ругался Next.js на head) */}
         <noscript>
           <div>

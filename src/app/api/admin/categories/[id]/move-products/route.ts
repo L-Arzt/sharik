@@ -86,4 +86,3 @@ export async function POST(
     return NextResponse.json({ error: 'Move failed' }, { status: 500 });
   }
 }
-

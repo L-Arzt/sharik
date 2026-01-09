@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  ShoppingCart,
-  Heart,
-  ChevronRight,
-  Minus,
+import { 
+  ShoppingCart, 
+  Heart, 
+  ChevronRight, 
+  Minus, 
   Plus,
   Truck,
   Shield,
@@ -103,12 +103,7 @@ export default function ProductPage() {
 
   const getImageUrl = (image: ProductImage): string => {
     if (image.relativePath) {
-      // Нормализуем путь (заменяем обратные слеши на прямые)
-      const normalizedPath = image.relativePath.replace(/\\/g, '/');
-      // Разбиваем на сегменты и кодируем каждый отдельно
-      const segments = normalizedPath.split('/').filter(s => s.length > 0);
-      const encodedPath = segments.map(segment => encodeURIComponent(segment)).join('/');
-      return `/api/images/${encodedPath}`;
+      return `/api/images/${encodeURIComponent(image.relativePath.replace(/\\/g, '/'))}`;
     }
     return '/images/pic1.jpg';
   };
@@ -221,7 +216,7 @@ export default function ProductPage() {
             <div className="bg-white rounded-2xl overflow-hidden shadow-lg mb-4 relative h-[500px]">
               <Image
                 src={getImageUrl(product.images[selectedImage] || product.images[0])}
-                alt={product.name}
+                    alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае`}
                 fill
                 className="object-contain "
                 onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
@@ -252,7 +247,7 @@ export default function ProductPage() {
                   >
                     <Image
                       src={getImageUrl(image)}
-                      alt={`${product.name} ${index + 1}`}
+                      alt={`${product.name} - фото ${index + 1} - Воздушные шары Ростов`}
                       fill
                       className="object-cover"
                       onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
@@ -270,7 +265,7 @@ export default function ProductPage() {
                 <p className="text-sm text-gray-500 mb-2">Артикул: {product.productCode}</p>
               )}
               
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4" itemProp="name">{product.name}</h1>
               
               <div className="flex items-center gap-4 mb-6">
                 <span className="text-4xl font-bold text-blue-600">{product.price}</span>

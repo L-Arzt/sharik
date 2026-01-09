@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { X, Upload, Trash2, Wand2 } from 'lucide-react';
-import Image from 'next/image';
 
 type Category = { id: string; name: string; parentId?: string | null };
 
@@ -24,19 +23,6 @@ type ProductForm = {
   inStock: boolean;
   categories: { id: string }[];
   images: ProductImage[];
-};
-
-type ProductFromAPI = {
-  id: string;
-  name: string;
-  slug?: string | null;
-  price: string;
-  priceNumeric?: number | null;
-  descriptionText?: string;
-  isActive: boolean;
-  inStock: boolean;
-  categories: { categoryId: string; category?: { id: string; name: string } }[];
-  images: { id: string; relativePath: string; isPrimary: boolean; imageOrder: number }[];
 };
 
 function slugifyRu(text: string): string {
@@ -72,7 +58,18 @@ export default function ProductModal({
   onSave,
   token,
 }: {
-  product: ProductFromAPI | null;
+  product: {
+    id?: string;
+    name?: string;
+    slug?: string | null;
+    price?: string;
+    priceNumeric?: number | null;
+    descriptionText?: string;
+    isActive?: boolean;
+    inStock?: boolean;
+    categories?: Array<{ categoryId?: string; id?: string }>;
+    images?: Array<{ id: string; relativePath?: string | null; isPrimary: boolean; imageOrder: number }>;
+  } | null;
   onClose: () => void;
   onSave: () => void;
   token: string;
@@ -93,18 +90,6 @@ export default function ProductModal({
   const [catSearch, setCatSearch] = useState('');
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && fullScreenImage) {
-        setFullScreenImage(null);
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [fullScreenImage]);
 
   useEffect(() => {
     (async () => {
@@ -113,7 +98,7 @@ export default function ProductModal({
       });
       const data = await res.json();
       setAllCategories(data || []);
-    })().catch(() => {});
+    })().catch(() => console.error('Ошибка загрузки категорий'));
   }, [token]);
 
   useEffect(() => {
@@ -129,13 +114,10 @@ export default function ProductModal({
       descriptionText: product.descriptionText || '',
       isActive: !!product.isActive,
       inStock: !!product.inStock,
-      categories: (product.categories || [])
-  .map((pc) => pc.categoryId || pc.category?.id) 
-  .filter((id): id is string => !!id)         
-  .map((id) => ({ id })),     
-      images: (product.images || []).map((img) => ({
+      categories: (product.categories || []).map((pc: { categoryId?: string; id?: string }) => ({ id: pc.categoryId || pc.id || '' })),
+      images: (product.images || []).map((img: { id: string; relativePath?: string | null; isPrimary: boolean; imageOrder: number }) => ({
         id: img.id,
-        relativePath: img.relativePath,
+        relativePath: img.relativePath ?? '',
         isPrimary: img.isPrimary,
         imageOrder: img.imageOrder,
       })),
@@ -252,7 +234,7 @@ const toPublicUrl = (p?: string | null) => {
 
   const validate = (): string | null => {
     if (!form.name.trim()) return 'Введите название товара';
-    if (!form.price.trim()) return 'Введите цену';
+    if (!form.price.trim()) return 'Введите цену (например: 6500 ₽)';
     return null;
   };
 
@@ -437,15 +419,12 @@ const toPublicUrl = (p?: string | null) => {
                 {form.images.length > 0 && (
                   <div className="mt-4 grid grid-cols-3 gap-3">
                     {form.images.map((img, idx) => (
-                      <div key={idx} className="relative group border-2 border-gray-200 rounded-xl overflow-hidden hover:border-blue-400 transition cursor-pointer">
-                        <Image
+                      <div key={idx} className="relative group border-2 border-gray-200 rounded-xl overflow-hidden hover:border-blue-400 transition">
+                        <img
                           src={toPublicUrl(img.relativePath)}
                           alt=""
-                          width={112}
-                          height={112}
                           className="w-full h-28 object-cover"
                           loading="lazy"
-                          onClick={() => setFullScreenImage(toPublicUrl(img.relativePath))}
                         />
 
                         <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 p-2 bg-gradient-to-t from-black/80 to-transparent">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Plus, Edit2, Trash2, ChevronRight, ChevronDown, Move, X, Package } from 'lucide-react';
 import CategoryModal from './CategoryModal';
 
@@ -138,7 +138,7 @@ function MoveProductsModal({
               <div className="text-sm">
                 <div className="text-green-700 font-semibold mb-1">Будет перемещено:</div>
                 <div className="text-green-900">
-                  Все товары из категории <span className="font-bold">&ldquo;{category.name}&rdquo;</span> будут перемещены в категорию <span className="font-bold">&ldquo;{selectedCategory.name}&rdquo;</span>
+                  Все товары из категории <span className="font-bold">&quot;{category.name}&quot;</span> будут перемещены в категорию <span className="font-bold">&quot;{selectedCategory.name}&quot;</span>
                 </div>
                 <div className="text-xs text-green-600 mt-2">
                   Всего товаров: {category._count.products}
@@ -541,18 +541,6 @@ export default function CategoriesPage() {
     return buildCategoryTree(categories);
   }, [categories]);
 
-  const fetchCategories = useCallback(async () => {
-    try {
-      const res = await fetch('/api/admin/categories', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setCategories(data);
-    } catch {
-      alert('Ошибка загрузки категорий');
-    }
-  }, [token]);
-
   useEffect(() => {
     const t = localStorage.getItem('adminToken');
     setToken(t || '');
@@ -561,7 +549,8 @@ export default function CategoriesPage() {
   useEffect(() => {
     if (!token) return;
     fetchCategories();
-  }, [token, fetchCategories]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const toggleExpand = (id: string) => {
     setExpandedIds(prev => {
@@ -573,6 +562,18 @@ export default function CategoriesPage() {
       }
       return next;
     });
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/admin/categories', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setCategories(data);
+    } catch {
+      alert('Ошибка загрузки категорий');
+    }
   };
 
   const handleDelete = async (id: string) => {

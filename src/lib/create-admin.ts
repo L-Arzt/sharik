@@ -12,11 +12,11 @@ async function main() {
       where: { email: email }
     });
     console.log(`🗑️  Deleted existing admin: ${deletedAdmin.email}`);
-  } catch (error: any) {
-
-    if (error.code !== 'P2025') {
+  } catch (error: unknown) {
+    const prismaError = error as { code?: string };
+    if (prismaError.code !== 'P2025') {
       console.error('❌ Error deleting admin:', error);
-      throw error;
+      throw prismaError;
     }
     console.log('ℹ️  No existing admin to delete');
   }

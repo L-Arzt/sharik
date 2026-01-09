@@ -81,7 +81,7 @@ const Hero = () => {
                 whileTap={{ scale: 0.95 }}
                 href="https://t.me/cloudless_sky"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-shadow"
               >
                 <MessageCircle className="w-4 h-4" />
@@ -92,7 +92,7 @@ const Hero = () => {
                 whileTap={{ scale: 0.95 }}
                 href="https://api.whatsapp.com/send?phone=79951351323"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-shadow"
               >
                 <span className="font-bold">WA</span>
@@ -103,7 +103,7 @@ const Hero = () => {
                 whileTap={{ scale: 0.95 }}
                 href="https://vk.com/cloudlessly_sky"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-shadow"
               >
                 <span className="font-bold">VK</span>
@@ -114,7 +114,7 @@ const Hero = () => {
                 whileTap={{ scale: 0.95 }}
                 href="https://www.instagram.com/cloudlessly_sky"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-shadow"
               >
                 <InstagramIcon className="w-4 h-4" />

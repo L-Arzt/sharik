@@ -35,7 +35,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-nunito)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-comfortaa)', 'system-ui', 'sans-serif'],
       },
       spacing: {
         '18': '4.5rem',

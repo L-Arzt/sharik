@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Package, X, ChevronRight, ChevronDown } from 'lucide-react';
-import Image from 'next/image';
 import ProductModal from './ProductModal';
 
 type ProductRow = {
@@ -16,7 +15,7 @@ type ProductRow = {
   categories: { id: string; categoryId: string; category?: { id: string; name: string; slug: string } }[];
 };
 
-interface Category {
+interface CategoryWithChildren {
   id: string;
   name: string;
   slug: string;
@@ -24,7 +23,13 @@ interface Category {
   children?: CategoryWithChildren[];
 }
 
-type CategoryWithChildren = Category & { children: CategoryWithChildren[] };
+type CategoryInput = {
+  id: string;
+  name: string;
+  slug: string;
+  parentId: string | null;
+  children?: CategoryInput[];
+};
 
 export default function AdminProductsPage() {
   const [token, setToken] = useState<string | null>(null);
@@ -45,7 +50,7 @@ export default function AdminProductsPage() {
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
   const [bulkCategoriesModalOpen, setBulkCategoriesModalOpen] = useState(false);
   const [bulkAction, setBulkAction] = useState<'add' | 'remove' | 'replace'>('add');
-  const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [allCategories, setAllCategories] = useState<CategoryInput[]>([]);
 
   useEffect(() => {
     const stored = localStorage.getItem('adminToken');
@@ -315,11 +320,9 @@ export default function AdminProductsPage() {
                       <td className="px-6 py-4">
                         {preview ? (
                           <div className="flex items-center gap-3">
-                            <Image
+                            <img
                               src={preview}
                               alt={p.name}
-                              width={56}
-                              height={56}
                               className="w-14 h-14 object-cover rounded-xl border-2 border-gray-200 shadow-sm"
                               loading="lazy"
                             />
@@ -440,23 +443,7 @@ export default function AdminProductsPage() {
 
       {modalOpen && token && (
         <ProductModal
-          product={editing ? {
-            id: editing.id,
-            name: editing.name,
-            slug: editing.slug,
-            price: editing.price,
-            priceNumeric: null,
-            descriptionText: undefined,
-            isActive: editing.isActive,
-            inStock: editing.inStock,
-            categories: editing.categories.map(pc => ({ categoryId: pc.categoryId, category: pc.category })),
-            images: editing.images.map(img => ({
-              id: img.id,
-              relativePath: img.relativePath || '',
-              isPrimary: img.isPrimary,
-              imageOrder: img.imageOrder
-            }))
-          } : null}
+          product={editing}
           token={token}
           onClose={() => setModalOpen(false)}
           onSave={async () => {
@@ -503,7 +490,7 @@ export default function AdminProductsPage() {
               setBulkCategoriesModalOpen(false);
               setSelectedProducts(new Set());
               await load();
-            } catch {
+            } catch (err) {
               alert('Ошибка обновления категорий');
             }
           }}
@@ -523,7 +510,7 @@ function BulkCategoriesModal({
   onSave,
 }: {
   selectedCount: number;
-  allCategories: Category[];
+  allCategories: CategoryInput[];
   action: 'add' | 'remove' | 'replace';
   onActionChange: (action: 'add' | 'remove' | 'replace') => void;
   onClose: () => void;
@@ -534,46 +521,48 @@ function BulkCategoriesModal({
   const [searchQuery, setSearchQuery] = useState('');
 
   // Строим дерево категорий
-  const categoryTree = useMemo(() => {
-    const buildCategoryTree = (categories: Category[]): CategoryWithChildren[] => {
-      const categoryMap = new Map<string, CategoryWithChildren>();
-      const rootCategories: CategoryWithChildren[] = [];
+  const buildCategoryTree = (categories: CategoryInput[]): CategoryWithChildren[] => {
+    const categoryMap = new Map<string, CategoryWithChildren>();
+    const rootCategories: CategoryWithChildren[] = [];
 
-      categories.forEach(cat => {
-        categoryMap.set(cat.id, { ...cat, children: [] });
-      });
+    categories.forEach(cat => {
+      categoryMap.set(cat.id, { ...cat, children: [] });
+    });
 
-      categories.forEach(cat => {
-        const category = categoryMap.get(cat.id)!;
-        if (cat.parentId && categoryMap.has(cat.parentId)) {
-          const parent = categoryMap.get(cat.parentId)!;
-          parent.children.push(category);
-        } else {
-          rootCategories.push(category);
+    categories.forEach(cat => {
+      const category = categoryMap.get(cat.id)!;
+      if (cat.parentId && categoryMap.has(cat.parentId)) {
+        const parent = categoryMap.get(cat.parentId)!;
+        if (!parent.children) {
+          parent.children = [];
         }
-      });
+        parent.children.push(category);
+      } else {
+        rootCategories.push(category);
+      }
+    });
 
-      return rootCategories;
-    };
+    return rootCategories;
+  };
 
-    return buildCategoryTree(allCategories);
-  }, [allCategories]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const categoryTree = useMemo(() => buildCategoryTree(allCategories), [allCategories]);
 
   // Фильтруем категории по поиску
   const filteredTree = useMemo(() => {
     if (!searchQuery.trim()) return categoryTree;
-
+    
     const query = searchQuery.toLowerCase();
     const filterCategories = (cats: CategoryWithChildren[]): CategoryWithChildren[] => {
       return cats
-        .filter(cat =>
-          cat.name.toLowerCase().includes(query) ||
+        .filter(cat => 
+          cat.name.toLowerCase().includes(query) || 
           cat.slug.toLowerCase().includes(query) ||
-          filterCategories(cat.children).length > 0
+          filterCategories(cat.children || []).length > 0
         )
         .map(cat => ({
           ...cat,
-          children: filterCategories(cat.children),
+          children: filterCategories(cat.children || []),
         }));
     };
     return filterCategories(categoryTree);
@@ -742,7 +731,7 @@ function BulkCategoryTreeItem({
   expandedIds: Set<string>;
   onToggleExpand: (id: string) => void;
 }) {
-  const hasChildren = category.children.length > 0;
+  const hasChildren = category.children && category.children.length > 0;
   const isExpanded = expandedIds.has(category.id);
   const isSelected = selectedIds.has(category.id);
 
@@ -788,7 +777,7 @@ function BulkCategoryTreeItem({
       </div>
       {hasChildren && isExpanded && (
         <div>
-          {category.children.map((child) => (
+          {(category.children || []).map((child) => (
             <BulkCategoryTreeItem
               key={child.id}
               category={child}

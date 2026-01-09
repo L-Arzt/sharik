@@ -17,7 +17,9 @@ function normalizeImagePath(input: string): string {
       const u = new URL(input);
       return u.pathname + (u.search || '');
     }
-  } catch {}
+  } catch {
+    // Ignore URL parsing errors
+  }
   return input;
 }
 

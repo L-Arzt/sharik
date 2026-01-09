@@ -71,16 +71,14 @@ const Footer = () => {
             <h4 className="text-lg font-semibold">Быстрые ссылки</h4>
             <ul className="space-y-2">
               <li>
-                {/* ✅ Используем Link для внутренней страницы */}
                 <Link href="/" className="text-gray-300 hover:text-white transition-colors">
                   Главная
                 </Link>
               </li>
               <li>
-                {/* ✅ Для якорных ссылок (#) оставляем <a> */}
-                <a href="#categories" className="text-gray-300 hover:text-white transition-colors">
-                  Категории
-                </a>
+                <Link href="/catalog" className="text-gray-300 hover:text-white transition-colors">
+                  Каталог товаров
+                </Link>
               </li>
               <li>
                 <a href="#contact-section" className="text-gray-300 hover:text-white transition-colors">
