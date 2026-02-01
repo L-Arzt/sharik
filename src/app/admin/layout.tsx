@@ -56,6 +56,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 src="/images/logo.jpg"
                 alt="Логотип"
                 fill
+                sizes="40px"
                 className="object-contain rounded-lg"
               />
             </div>

@@ -212,51 +212,64 @@ export default function ProductPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12 items-center">
           
           {/* Галерея изображений */}
-          <div className=" top-24">
-            <div className="bg-white rounded-2xl overflow-hidden shadow-lg mb-4 relative h-[500px]">
-              <Image
-                src={getImageUrl(product.images[selectedImage] || product.images[0])}
-                    alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае`}
-                fill
-                className="object-contain "
-                onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
-              />
-              <button 
-                onClick={handleToggleFavorite}
-                className={`absolute top-4 right-4 p-3 backdrop-blur-sm rounded-full transition-all shadow-lg ${
-                  isInFavorites 
-                    ? 'bg-red-500 text-white hover:bg-red-600' 
-                    : 'bg-white/90 hover:bg-white text-gray-400 hover:text-red-500'
-                }`}
-              >
-                <Heart size={24} className={isInFavorites ? 'fill-white' : ''} />
-              </button>
-            </div>
+{/* Галерея изображений */}
+<div className=" top-24">
+  <a
+    href={getImageUrl(product.images[selectedImage] || product.images[0])}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bg-white rounded-2xl overflow-hidden shadow-lg mb-4 relative h-[500px] block"
+  >
+    <Image
+      src={getImageUrl(product.images[selectedImage] || product.images[0])}
+      alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае`}
+      fill
+      className="object-contain pointer-events-none"
+      onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
+    />
+    <button 
+      onClick={(e) => { e.preventDefault(); handleToggleFavorite(); }}
+      className={`absolute top-4 right-4 p-3 backdrop-blur-sm rounded-full transition-all shadow-lg ${
+        isInFavorites 
+          ? 'bg-red-500 text-white hover:bg-red-600' 
+          : 'bg-white/90 hover:bg-white text-gray-400 hover:text-red-500'
+      }`}
+    >
+      <Heart size={24} className={isInFavorites ? 'fill-white' : ''} />
+    </button>
+  </a>
 
-            {product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4">
-                {product.images.map((image, index) => (
-                  <button
-                    key={image.id}
-                    onClick={() => setSelectedImage(index)}
-                    className={`relative h-24 rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === index 
-                        ? 'border-blue-600 scale-105' 
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <Image
-                      src={getImageUrl(image)}
-                      alt={`${product.name} - фото ${index + 1} - Воздушные шары Ростов`}
-                      fill
-                      className="object-cover"
-                      onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+  {product.images.length > 1 && (
+    <div className="grid grid-cols-4 gap-4">
+      {product.images.map((image, index) => (
+        <a
+          key={image.id}
+          href={getImageUrl(image)}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => { 
+            e.preventDefault(); 
+            setSelectedImage(index); 
+          }}
+          className={`relative h-24 rounded-lg overflow-hidden border-2 transition-all ${
+            selectedImage === index 
+              ? 'border-blue-600 scale-105' 
+              : 'border-gray-200 hover:border-gray-300'
+          }`}
+        >
+          <Image
+            src={getImageUrl(image)}
+            alt={`${product.name} - фото ${index + 1} - Воздушные шары Ростов`}
+            fill
+            className="object-cover pointer-events-none"
+            onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
+          />
+        </a>
+      ))}
+    </div>
+  )}
+</div>
+
 
           {/* Информация о товаре */}
           <div>

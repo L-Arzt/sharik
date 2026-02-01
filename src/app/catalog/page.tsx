@@ -167,6 +167,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
               src={imageUrl}
               alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае с доставкой. Цена ${product.price}`}
               fill
+              sizes="192px"
               loading="lazy"
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
@@ -246,6 +247,7 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
             src={imageUrl}
             alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае с доставкой. Цена ${product.price}`}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
             onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
@@ -502,8 +504,8 @@ function CatalogContent() {
   const currentCategory = searchParams.get('category');
   const searchQuery = searchParams.get('search') || '';
   const currentPage = Number(searchParams.get('page')) || 1;
-  const currentSort = searchParams.get('sort') || 'name';
-  const currentOrder = searchParams.get('order') || 'asc';
+  const currentSort = searchParams.get('sort') || 'created';
+  const currentOrder = searchParams.get('order') || 'desc';
 
 
   const [totalPages, setTotalPages] = useState(1);
@@ -605,6 +607,10 @@ function CatalogContent() {
     loadProducts();
   }, [currentCategory, searchQuery, currentPage, currentSort, currentOrder, searchParams]);
 
+  // При перелистывании страниц — прокрутка в начало
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
 
   const updateUrl = useCallback((params: Record<string, string | null>) => {
     const newParams = new URLSearchParams(searchParams.toString());
@@ -812,8 +818,8 @@ function CatalogContent() {
                   }}
                   className="border-none bg-gray-50 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 focus:ring-0 cursor-pointer hover:bg-gray-100"
                 >
-                  <option value="name-asc">По названию (А-Я)</option>
-                  <option value="name-desc">По названию (Я-А)</option>
+                  <option value="created-desc">По новизне</option>
+                  <option value="created-asc">По давности</option>
                   <option value="price-asc">По цене (дешевле)</option>
                   <option value="price-desc">По цене (дороже)</option>
                 </select>

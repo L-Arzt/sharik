@@ -74,27 +74,47 @@ export async function GET(request: NextRequest) {
     }
 
 
-    // Улучшенный поиск
-    if (search) {
-      const searchLower = search.toLowerCase();
-      where.OR = [
-        { name: { contains: search } },
-        { descriptionText: { contains: search } },
-        { searchText: { contains: searchLower } },
-        { productCode: { contains: search } },
-        { tags: { contains: search } },
-      ];
-    }
 
+    const stemRus = (w: string) => {
+      const s = w.toLowerCase();
+      if (s.length <= 2) return s;
+      const v = 'аеёиоуыэюя';
+      return v.includes(s.slice(-1)) ? s.slice(0, -1) : s;
+    };
+    if (search?.trim()) {
+      const words = search.trim().split(/\s+/).filter(Boolean);
+      const wordConds = words.map((w) => {
+        const s = stemRus(w);
+        const atStart = `${s}%`;
+        const afterSpace = `% ${s}%`;
+        return Prisma.sql`(
+          LOWER(COALESCE(name,'')) LIKE ${atStart} OR LOWER(COALESCE(name,'')) LIKE ${afterSpace}
+          OR LOWER(COALESCE(descriptionText,'')) LIKE ${atStart} OR LOWER(COALESCE(descriptionText,'')) LIKE ${afterSpace}
+          OR LOWER(COALESCE(searchText,'')) LIKE ${atStart} OR LOWER(COALESCE(searchText,'')) LIKE ${afterSpace}
+          OR LOWER(COALESCE(productCode,'')) LIKE ${atStart} OR LOWER(COALESCE(productCode,'')) LIKE ${afterSpace}
+          OR LOWER(COALESCE(tags,'')) LIKE ${atStart} OR LOWER(COALESCE(tags,'')) LIKE ${afterSpace}
+        )`;
+      });
+      const allConds =
+        wordConds.length === 1
+          ? wordConds[0]
+          : wordConds.reduce((acc, cond) => Prisma.sql`${acc} AND ${cond}`);
+      const rawWhere = includeInactive
+        ? allConds
+        : Prisma.sql`isActive = 1 AND ${allConds}`;
+      const rows = await prisma.$queryRaw<{ id: string }[]>(
+        Prisma.sql`SELECT id FROM products WHERE ${rawWhere}`
+      );
+      const searchIds = rows.map((r) => r.id);
+      where.id = searchIds.length ? { in: searchIds } : { in: [''] };
+    }
 
     // Фильтр по тегам
     if (tags) {
-      const tagArray = tags.split(',').map(t => t.trim());
+      const tagArray = tags.split(',').map((t) => t.trim());
       where.OR = [
         ...(where.OR || []),
-        ...tagArray.map(tag => ({
-          tags: { contains: tag, mode: 'insensitive' as const },
-        })),
+        ...tagArray.map((tag) => ({ tags: { contains: tag } })),
       ];
     }
 

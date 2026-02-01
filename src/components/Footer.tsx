@@ -6,7 +6,7 @@ import Link from 'next/link'; // ✅ Добавьте импорт
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white" itemScope itemType="https://schema.org/Organization">
+    <footer className="bg-gray-900 text-white -mt-px " itemScope itemType="https://schema.org/Organization">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Company Info */}

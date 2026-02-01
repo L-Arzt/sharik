@@ -129,7 +129,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="ru">
+    <html lang="ru" data-scroll-behavior="smooth">
       <head>
         {/* Preconnect для оптимизации загрузки */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

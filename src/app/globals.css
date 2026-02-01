@@ -19,6 +19,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 /* Заголовки используют Comfortaa для более игривого вида */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-comfortaa);

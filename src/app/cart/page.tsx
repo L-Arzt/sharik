@@ -309,11 +309,12 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                 <div className="flex gap-4 sm:gap-6 flex-wrap sm:flex-nowrap">
                 <Link href={`/product/${item.slug}`} className="relative w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-gray-50 rounded-xl overflow-hidden">
                     <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      sizes="(max-width: 640px) 96px, 128px"
+                      className="object-cover"
+                      onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
                     />
                 </Link>
 
