@@ -46,7 +46,12 @@ export async function POST(req: NextRequest) {
       relativePath: `uploads/products/${filename}`,
       filename,
     });
-  } catch {
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Upload failed';
+    console.error('Upload error:', err);
+    return NextResponse.json(
+      { error: 'Upload failed', details: process.env.NODE_ENV === 'development' ? message : undefined },
+      { status: 500 }
+    );
   }
 }

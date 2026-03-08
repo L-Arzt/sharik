@@ -10,7 +10,10 @@
     "db:push": "npx prisma db push",
     "db:generate": "npx prisma generate",
     "db:studio": "npx prisma studio",
-    "db:seed": "ts-node --project prisma/tsconfig.json prisma/seed.ts"
+    "db:seed": "ts-node --project prisma/tsconfig.json prisma/seed.ts",
+    "db:images-to-webp": "node scripts/update-image-paths-to-webp.mjs",
+    "db:shorten-paths": "node scripts/shorten-folder-names.mjs"
+
   },
   "prisma": {
     "seed": "ts-node --project prisma/tsconfig.json prisma/seed.ts"

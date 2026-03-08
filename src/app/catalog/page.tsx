@@ -50,8 +50,19 @@ interface Product {
 }
 
 
+// --- Вспомогательная функция URL первого изображения товара (для preload) ---
+function getProductImageUrl(product: Product): string {
+  if (product.images?.[0]?.relativePath) {
+    const normalizedPath = product.images[0].relativePath.replace(/\\/g, '/');
+    const segments = normalizedPath.split('/').filter((s) => s.length > 0);
+    const encodedPath = segments.map((segment) => encodeURIComponent(segment)).join('/');
+    return `/api/images/${encodedPath}`;
+  }
+  return '/images/pic1.jpg';
+}
+
 // --- Компонент карточки товара ---
-const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid' | 'list' }) => {
+const ProductCard = ({ product, viewMode, priority = false }: { product: Product; viewMode: 'grid' | 'list'; priority?: boolean }) => {
   const [isInFavorites, setIsInFavorites] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
@@ -167,8 +178,8 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
               src={imageUrl}
               alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае с доставкой. Цена ${product.price}`}
               fill
-              sizes="192px"
-              loading="lazy"
+              loading={priority ? 'eager' : 'lazy'}
+              fetchPriority={priority ? 'high' : 'auto'}
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
             />
@@ -247,9 +258,9 @@ const ProductCard = ({ product, viewMode }: { product: Product; viewMode: 'grid'
             src={imageUrl}
             alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае с доставкой. Цена ${product.price}`}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
             className="object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
             onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
           />
           <button 
@@ -607,6 +618,23 @@ function CatalogContent() {
     loadProducts();
   }, [currentCategory, searchQuery, currentPage, currentSort, currentOrder, searchParams]);
 
+  // Preload первых фото каталога — браузер начинает качать их сразу после загрузки списка
+  useEffect(() => {
+    const links: HTMLLinkElement[] = [];
+    products.slice(0, 6).forEach((p) => {
+      const href = getProductImageUrl(p);
+      if (href.startsWith('/api/')) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = href;
+        document.head.appendChild(link);
+        links.push(link);
+      }
+    });
+    return () => links.forEach((l) => l.remove());
+  }, [products]);
+
   // При перелистывании страниц — прокрутка в начало
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -861,8 +889,8 @@ function CatalogContent() {
                 ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" 
                 : "flex flex-col gap-4"
               }>
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} viewMode={viewMode} />
+                {products.map((product, index) => (
+                  <ProductCard key={product.id} product={product} viewMode={viewMode} priority={index < 6} />
                 ))}
               </div>
             ) : (

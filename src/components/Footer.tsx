@@ -71,19 +71,19 @@ const Footer = () => {
             <h4 className="text-lg font-semibold">Быстрые ссылки</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-gray-300 hover:text-white transition-colors">
-                  Главная
-                </Link>
-              </li>
-              <li>
                 <Link href="/catalog" className="text-gray-300 hover:text-white transition-colors">
-                  Каталог товаров
+                  Каталог
                 </Link>
               </li>
               <li>
-                <a href="#contact-section" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/#about" className="text-gray-300 hover:text-white transition-colors">
+                  О нас
+                </Link>
+              </li>
+              <li>
+                <Link href="/#contact-section" className="text-gray-300 hover:text-white transition-colors">
                   Контакты
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

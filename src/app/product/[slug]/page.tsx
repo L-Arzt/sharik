@@ -224,6 +224,7 @@ export default function ProductPage() {
       src={getImageUrl(product.images[selectedImage] || product.images[0])}
       alt={`${product.name} - Воздушные шары в Ростове-на-Дону и Аксае`}
       fill
+      priority
       className="object-contain pointer-events-none"
       onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
     />

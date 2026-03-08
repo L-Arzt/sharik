@@ -247,43 +247,44 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
 
         {/* Уведомление об активном заказе */}
         {activeOrder && (
-          <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-6 mb-8">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="text-white" size={24} />
-              </div>
-              <div className="flex-grow">
-                <h3 className="text-xl font-bold text-green-900 mb-2">
-                  Ваш заказ оформлен!
-                </h3>
-                <p className="text-green-800 mb-1">
-                  <strong>Номер заказа:</strong> {activeOrder.orderId}
-                </p>
-                <p className="text-green-800 mb-1">
-                  <strong>Дата оформления:</strong> {activeOrder.orderDate}
-                </p>
-                <p className="text-green-700 text-sm mb-4">
-                  Мы свяжемся с вами по телефону {activeOrder.customer.phone} для подтверждения заказа.
-                </p>
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleCancelOrder}
-                    className="px-6 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all flex items-center gap-2"
-                  >
-                    <X size={18} />
-                    Отменить заказ
-                  </button>
-                  <Link
-                    href="/catalog"
-                    className="px-6 py-2 bg-white border-2 border-green-500 text-green-700 rounded-lg font-medium hover:bg-green-50 transition-all"
-                  >
-                    Продолжить покупки
-                  </Link>
-                </div>
+        <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4 sm:p-6 mb-8">
+          <div className="flex flex-col sm:flex-row items-start gap-4">
+            <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <CheckCircle className="text-white" size={24} />
+            </div>
+            <div className="flex-grow min-w-0 w-full">
+              <h3 className="text-lg sm:text-xl font-bold text-green-900 mb-2 break-words">
+                Ваш заказ оформлен!
+              </h3>
+              <p className="text-sm sm:text-base text-green-800 mb-1 break-words">
+                <strong>Номер заказа:</strong> {activeOrder.orderId}
+              </p>
+              <p className="text-sm sm:text-base text-green-800 mb-1 break-words">
+                <strong>Дата оформления:</strong> {activeOrder.orderDate}
+              </p>
+              <p className="text-xs sm:text-sm text-green-700 mb-4 break-words">
+                Мы свяжемся с вами по телефону {activeOrder.customer.phone} для подтверждения заказа.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={handleCancelOrder}
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
+                >
+                  <X size={18} />
+                  <span className="whitespace-nowrap">Отменить заказ</span>
+                </button>
+                <Link
+                  href="/catalog"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-white border-2 border-green-500 text-green-700 rounded-lg font-medium hover:bg-green-50 transition-all text-center text-sm sm:text-base whitespace-nowrap"
+                >
+                  Продолжить покупки
+                </Link>
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
+
 
 
         {cart.length === 0 ? (
@@ -312,7 +313,6 @@ const handleSubmitOrder = async (e: React.FormEvent) => {
                       src={item.image}
                       alt={item.name}
                       fill
-                      sizes="(max-width: 640px) 96px, 128px"
                       className="object-cover"
                       onError={(e) => { (e.target as HTMLImageElement).src = '/images/pic1.jpg'; }}
                     />
